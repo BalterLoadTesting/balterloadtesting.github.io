@@ -1,0 +1,78 @@
+{% extends "juice/templates/index.html" %}
+
+
+{% block hero %}
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<div class="hero-wrapper">
+<section class="text-center">
+    <h1 class="heading-text" style="font-size: 50px">
+        AutoBalter
+        <!--<img src="{{ get_url(path="logo.svg") }}" style="width:5em">-->
+    </h1>
+    <h3 class="title-text">
+      Automatic load testing and performance analysis.
+    </h3>
+    <h3 class="title-text">
+      Full confidence in your system with just an API spec. 
+    </h3>
+</section>
+<img class="hero-image" style="width: 50%" src="{{ get_url(path="autobalter-mockup.png") }}">
+</div>
+
+<div class="explore-more text"
+    onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+    Explore More ⇩
+</div>
+<style>
+    .hero section {
+        padding: 0 5rem;
+    }
+
+    #sponsor-small {
+      display: none
+    }
+
+    @media screen and (max-width: 768px) {
+        .hero section {
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            display: none
+        }
+
+        .demo-code {
+            display: none
+        }
+
+        #sponsor-big {
+          display: none
+        }
+
+        #sponsor-small {
+          display: block
+        }
+    }
+
+    .hero-wrapper {
+      display: flex;
+      flex-wrap: no-wrap;
+    }
+</style>
+{% endblock hero %}
+
+{% block content %}
+{{ section.content | safe }}
+{% endblock content %}
+
+{% block footer %}
+<footer>
+    <small class="subtext">
+        <a href="mailto:contact@balterloadtesting.com">contact@balterloadtesting.com</a>
+    </small>
+    <small class="subtext">
+        <a href="https://balterloadtesting.com">BalterLoadTesting.com</a> © 2024
+    </small>
+</footer>
+{% endblock footer %}

@@ -1,0 +1,155 @@
+{% extends "juice/templates/index.html" %}
+
+
+{% block header %}
+<header class="pos-absolute" style="background-color: transparent">
+    {{ macros::render_header_splash() }}
+</header>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<div class="hero-stack">
+
+  <div class="hero">
+<div class="hero-wrapper">
+<section class="text-center">
+    <h1 class="heading-text" style="font-size: 50px">
+        AutoBalter
+        <!--<img src="{{ get_url(path="logo.svg") }}" style="width:5em">-->
+    </h1>
+    <h3 class="title-text">
+      Automatic load testing and performance analysis.
+    </h3>
+    <h3 class="title-text">
+      Full confidence in your system with just an API spec. 
+    </h3>
+    <div>
+        <a class="text" href="/autobalter" data-size="large" data-show-count="true">Learn more!</a>
+    </div>
+</section>
+<img class="hero-image" style="width: 50%" src="{{ get_url(path="autobalter-mockup.png") }}">
+</div>
+  </div>
+
+  <div class="hero" style="background-color: var(--secondary-color)">
+<div class="hero-wrapper">
+<section class="text-center">
+    <h1 class="heading-text" style="font-size: 50px; border: none">
+      Balter-rs
+        <!--<img src="{{ get_url(path="logo.svg") }}" style="width:5em">-->
+    </h1>
+    <h3 class="title-text" style="border:none">
+      The composable distributed load testing framework.
+    </h3>
+    <h3 class="title-text" style="border:none">
+      Open Source under the MIT License.  
+    </h3>
+    <div style="padding-bottom: 1em">
+    <a class="github-button" href="https://github.com/balterloadtesting/balter" data-size="large" data-show-count="true"
+                                                                                                  aria-label="Star balterloadtesting/balter on GitHub">Star</a>
+    <a class="github-button" href="https://github.com/balterloadtesting/balter/fork" data-size="large"
+                                                                                     data-show-count="true" aria-label="Fork balterloadtesting/balter on GitHub">Fork</a>
+    </div>
+
+    <a class="text" href="https://balterloadtesting.com/balter" data-size="large" data-show-count="true">Learn more!</a>
+    </div>
+</section>
+<div class="content demo-code">
+  {{ "```rust
+use balter::prelude::*;
+
+#[tokio::main]
+async fn main() {
+    tokio::join! {
+        async {
+            // First, set up a background load which either hits
+            // 10K TPS, has a p95 latency of 200ms or has an
+            // error rate of 5%
+            set_background_load()
+                .tps(10_000)
+                .latency(Duration::from_millis(200), 0.95)
+                .error_rate(0.05)
+                .await;
+        },
+        async {
+            // After 300s of waiting, test our scaling ability
+            // by running a scenario which achieves either
+            // 100K TPS or a p90 latency of 1,000ms
+            sleep(Duration::from_secs(300)).await;
+
+            test_scaling_functionality()
+                .tps(100_000)
+                .latency(Duration::from_millis(1_000), 0.90)
+                .duration(Duration::from_secs(3600))
+                .await;
+        },
+    }
+}
+  ```" | markdown | safe }}
+</div>
+</div>
+    </div>
+
+</div>
+
+<style>
+    .hero {
+      height: 90vh;
+    }
+
+    .hero section {
+        padding: 0 5rem;
+    }
+
+    #sponsor-small {
+      display: none
+    }
+
+    @media screen and (max-width: 768px) {
+        .hero section {
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            display: none
+        }
+
+        .demo-code {
+            display: none
+        }
+
+        #sponsor-big {
+          display: none
+        }
+
+        #sponsor-small {
+          display: block
+        }
+    }
+
+    .hero-wrapper {
+      display: flex;
+      flex-wrap: no-wrap;
+    }
+
+    .hero-stack {
+      display: flex;
+      flex-direction: column;
+    }
+</style>
+{% endblock header %}
+
+{% block content %}
+
+
+{% endblock content %}
+
+{% block footer %}
+<footer>
+    <small class="subtext">
+        <a href="mailto:contact@balterloadtesting.com">contact@balterloadtesting.com</a>
+    </small>
+    <small class="subtext">
+        <a href="https://balterloadtesting.com">BalterLoadTesting.com</a> © 2024
+    </small>
+</footer>
+{% endblock footer %}

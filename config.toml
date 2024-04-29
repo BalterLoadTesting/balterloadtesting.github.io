@@ -1,5 +1,7 @@
 # The URL the site will be built for
-base_url = "https://balterloadtesting.com"
+base_url = "https://www.balterloadtesting.com"
+
+title = "Balter Load Testing"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
@@ -7,10 +9,25 @@ compile_sass = true
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
 
+theme = "juice"
+
 [markdown]
 # Whether to do syntax highlighting
 # Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
 
 [extra]
-# Put all your custom variables here
+juice_logo_name = "Balter Load Testing"
+juice_logo_path = "logo.svg"
+juice_extra_menu = [
+    { title = "Blog", link = "/autobalter/blog"},
+    { title = "Guide", link = "/autobalter/guide"},
+]
+juice_extra_menu_splash = [
+    { title = "AutoBalter", link = "/autobalter"},
+    { title = "Balter-rs", link = "/balter"},
+]
+juice_exclude_menu = [
+    "exclude_from_nav"
+]
+repository_url = "https://github.com/BalterLoadTesting/balter"

@@ -1,0 +1,19 @@
+{% extends "juice/templates/index.html" %}
+
+{% block header %}
+<header class="box-shadow">
+  {{ macros::render_header() }}
+</header>
+{% endblock header %}
+
+{% block content %}
+{{ section.content | safe }}
+{% endblock content %}
+
+{% block footer %}
+<footer>
+    <small class="subtext">
+        <a href="https://balterloadtesting.com">BalterLoadTesting.com</a> © 2024
+    </small>
+</footer>
+{% endblock footer %}
