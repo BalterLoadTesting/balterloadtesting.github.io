@@ -20,8 +20,8 @@ highlight_code = true
 juice_logo_name = "Balter Load Testing"
 juice_logo_path = "logo.svg"
 juice_extra_menu = [
-#    { title = "Blog", link = "/autobalter/blog"},
-#    { title = "Guide", link = "/autobalter/guide"},
+    { title = "AutoBalter", link = "/autobalter"},
+    { title = "Balter-rs", link = "/balter"},
 ]
 juice_extra_menu_splash = [
     { title = "AutoBalter", link = "/autobalter"},
