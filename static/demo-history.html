@@ -10,10 +10,84 @@
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.14/_esm.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-array@3.2.4/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-color@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-force@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-format@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-path@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-random@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-time@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/binary-search-bounds@2.0.5/_esm.js">
+<link rel="modulepreload" href="./_npm/internmap@2.0.3/_esm.js">
+<link rel="modulepreload" href="./_npm/delaunator@5.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/_esm.js">
 <link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
 <script type="module">
 
-import "./_observablehq/client.js";
+import {define} from "./_observablehq/client.js";
+import {registerFile} from "./_observablehq/stdlib.js";
+
+registerFile("./data/latency.csv", {"name":"./data/latency.csv","mimeType":"text/csv","path":"./_file/data/latency.9463a9fe.csv","lastModified":1717185005646});
+
+define({id: "4e0a1695", inputs: ["FileAttachment","Plot"], outputs: ["latency","latency_colors","latencyPlot"], body: (FileAttachment,Plot) => {
+const latency = FileAttachment("./data/latency.csv").csv({typed: true});
+
+const latency_colors = Plot.scale({
+  color: {
+    type: "categorical",
+    domain: ["p50", "p90", "p95", "p99"],
+    unknown: "var(--theme-foreground-muted)"
+  }
+});
+
+function latencyPlot(data, {width} = {}) {
+  return Plot.plot({
+    title: "p90 Latency Historical",
+    width,
+    height: 300,
+    y: {grid: true, label: "Latency (ms)"},
+    x: {grid: true, label: "Transactions Per Second"},
+    color: {...latency_colors, legend: true},
+    marks: [
+      Plot.line(data, {y: "latency", x: "tps", marker:true, stroke: "quantile", tip:true}),
+    ]
+  });
+}
+return {latency,latency_colors,latencyPlot};
+}});
+
+define({id: "c59a4e61", inline: true, inputs: ["resize","latencyPlot","latency","display"], body: async (resize,latencyPlot,latency,display) => {
+display(await(
+resize((width) => latencyPlot(latency, {width}))
+))
+}});
 
 </script>
 <input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
@@ -24,19 +98,29 @@ import "./_observablehq/client.js";
     <li class="observablehq-link"><a href="./">AutoBalter Demo</a></li>
   </ol>
   <ol>
-    <li class="observablehq-link"><a href="./demo-daily.html">Daily Dashboard</a></li>
-    <li class="observablehq-link observablehq-link-active"><a href="./demo-history.html">Historical Trends</a></li>
-    <li class="observablehq-link"><a href="./demo-report.html">Report</a></li>
-    <li class="observablehq-link"><a href="./demo-specification.html">Specification</a></li>
+    <li class="observablehq-link"><a href="./demo-api-overview">API Overview</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./demo-history">Historical Trends</a></li>
+    <li class="observablehq-link"><a href="./demo-report">Report</a></li>
+    <li class="observablehq-link"><a href="./demo-specification">Specification</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="historical-trends" tabindex="-1"><a class="observablehq-header-anchor" href="#historical-trends">Historical Trends</a></h1>
+<p><em>AutoBalter can be configured to track custom, long-term statistics about your APIs. Get alerted when an API does not meet the requirements.</em></p>
+<h2 id="tps" tabindex="-1"><a class="observablehq-header-anchor" href="#tps">TPS</a></h2>
+<h2 id="latency" tabindex="-1"><a class="observablehq-header-anchor" href="#latency">Latency</a></h2>
+<div id="cell-4e0a1695" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-c59a4e61"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<h2 id="error-rates" tabindex="-1"><a class="observablehq-header-anchor" href="#error-rates">Error Rates</a></h2>
 </main>
 <footer id="observablehq-footer">
-<nav><a rel="prev" href="./demo-daily.html"><span>Daily Dashboard</span></a><a rel="next" href="./demo-report.html"><span>Report</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-05-29T13:57:44">May 29, 2024</a>.</div>
+<nav><a rel="prev" href="./demo-api-overview"><span>API Overview</span></a><a rel="next" href="./demo-report"><span>Report</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-03T11:05:33">Jun 3, 2024</a>.</div>
 </footer>
 </div>

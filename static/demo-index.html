@@ -10,92 +10,10 @@
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
-<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.14/_esm.js">
-<link rel="modulepreload" href="./_npm/d3@7.9.0/_esm.js">
-<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
-<link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-array@3.2.4/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-color@3.1.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-force@3.0.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-format@3.1.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-path@3.1.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-random@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-time@3.1.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/_esm.js">
-<link rel="modulepreload" href="./_npm/binary-search-bounds@2.0.5/_esm.js">
-<link rel="modulepreload" href="./_npm/internmap@2.0.3/_esm.js">
-<link rel="modulepreload" href="./_npm/delaunator@5.0.1/_esm.js">
-<link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/_esm.js">
 <link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
 <script type="module">
 
-import {define} from "./_observablehq/client.js";
-import {registerFile} from "./_observablehq/stdlib.js";
-
-registerFile("./aapl.csv", {"name":"./aapl.csv","mimeType":"text/csv","path":"./_file/aapl.18dc8bf6.csv","lastModified":1716913815925});
-registerFile("./penguins.csv", {"name":"./penguins.csv","mimeType":"text/csv","path":"./_file/penguins.dfee817d.csv","lastModified":1716913815929});
-
-define({id: "7935742a", inline: true, inputs: ["resize","Plot","aapl","display"], body: async (resize,Plot,aapl,display) => {
-display(await(
-    resize((width) => Plot.plot({
-      title: "Your awesomeness over time 🚀",
-      subtitle: "Up and to the right!",
-      width,
-      y: {grid: true, label: "Awesomeness"},
-      marks: [
-        Plot.ruleY([0]),
-        Plot.lineY(aapl, {x: "Date", y: "Close", tip: true})
-      ]
-    }))
-  
-))
-}});
-
-define({id: "699041c1", inline: true, inputs: ["resize","Plot","penguins","display"], body: async (resize,Plot,penguins,display) => {
-display(await(
-    resize((width) => Plot.plot({
-      title: "How big are penguins, anyway? 🐧",
-      width,
-      grid: true,
-      x: {label: "Body mass (g)"},
-      y: {label: "Flipper length (mm)"},
-      color: {legend: true},
-      marks: [
-        Plot.linearRegressionY(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species"}),
-        Plot.dot(penguins, {x: "body_mass_g", y: "flipper_length_mm", stroke: "species", tip: true})
-      ]
-    }))
-  
-))
-}});
-
-define({id: "74b65852", inputs: ["FileAttachment"], outputs: ["aapl","penguins"], body: (FileAttachment) => {
-const aapl = FileAttachment("./aapl.csv").csv({typed: true});
-const penguins = FileAttachment("./penguins.csv").csv({typed: true});
-return {aapl,penguins};
-}});
+import "./_observablehq/client.js";
 
 </script>
 <input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
@@ -106,10 +24,10 @@ return {aapl,penguins};
     <li class="observablehq-link observablehq-link-active"><a href="./">AutoBalter Demo</a></li>
   </ol>
   <ol>
-    <li class="observablehq-link"><a href="./demo-daily.html">Daily Dashboard</a></li>
-    <li class="observablehq-link"><a href="./demo-history.html">Historical Trends</a></li>
-    <li class="observablehq-link"><a href="./demo-report.html">Report</a></li>
-    <li class="observablehq-link"><a href="./demo-specification.html">Specification</a></li>
+    <li class="observablehq-link"><a href="./demo-api-overview">API Overview</a></li>
+    <li class="observablehq-link"><a href="./demo-history">Historical Trends</a></li>
+    <li class="observablehq-link"><a href="./demo-report">Report</a></li>
+    <li class="observablehq-link"><a href="./demo-specification">Specification</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
@@ -157,44 +75,26 @@ return {aapl,penguins};
 
 </style>
 <div class="hero">
-  <h1>Hello Framework</h1>
-  <h2>Welcome to your new project! Edit&nbsp;<code style="font-size: 90%;">src/index.md</code> to change this page.</h2>
-  <a href="https://observablehq.com/framework/getting-started" target="_blank" rel="noopener noreferrer">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
+  <h1>AutoBalter Demo</h1>
+  <h2>Automated load testing, performance analysis, and data visualization.</h2>
 </div>
-<div class="grid grid-cols-2" style="grid-auto-rows: 504px;">
-  <div class="card"><span id="cell-7935742a"><span class="observablehq-loading"></span></span></div>
-  <div class="card"><span id="cell-699041c1"><span class="observablehq-loading"></span></span></div>
-</div>
-<div id="cell-74b65852" class="observablehq observablehq--block"></div>
-<hr>
-<h2 id="next-steps" tabindex="-1"><a class="observablehq-header-anchor" href="#next-steps">Next steps</a></h2>
-<p>Here are some ideas of things you could try…</p>
 <div class="grid grid-cols-4">
   <div class="card">
-    Chart your own data using <a href="https://observablehq.com/framework/lib/plot" target="_blank" rel="noopener noreferrer"><code>Plot</code></a> and <a href="https://observablehq.com/framework/files" target="_blank" rel="noopener noreferrer"><code>FileAttachment</code></a>. Make it responsive using <a href="https://observablehq.com/framework/display#responsive-display" target="_blank" rel="noopener noreferrer"><code>resize</code></a>.
+    Explore the <a href="./index.md">API Overview</a> for latest load test information.
   </div>
   <div class="card">
-    Create a <a href="https://observablehq.com/framework/project-structure" target="_blank" rel="noopener noreferrer">new page</a> by adding a Markdown file (<code>whatever.md</code>) to the <code>src</code> folder.
+    <a href="./index.md">Historical Trends</a> tracks how API performance has changed over time based on customizable parameters.
   </div>
   <div class="card">
-    Add a drop-down menu using <a href="https://observablehq.com/framework/inputs/select" target="_blank" rel="noopener noreferrer"><code>Inputs.select</code></a> and use it to filter the data shown in a chart.
+    The <a href="./index.md">Report</a> provides a high-level view of API performance for business leaders.
   </div>
   <div class="card">
-    Write a <a href="https://observablehq.com/framework/loaders" target="_blank" rel="noopener noreferrer">data loader</a> that queries a local database or API, generating a data snapshot on build.
-  </div>
-  <div class="card">
-    Import a <a href="https://observablehq.com/framework/imports" target="_blank" rel="noopener noreferrer">recommended library</a> from npm, such as <a href="https://observablehq.com/framework/lib/leaflet" target="_blank" rel="noopener noreferrer">Leaflet</a>, <a href="https://observablehq.com/framework/lib/dot" target="_blank" rel="noopener noreferrer">GraphViz</a>, <a href="https://observablehq.com/framework/lib/tex" target="_blank" rel="noopener noreferrer">TeX</a>, or <a href="https://observablehq.com/framework/lib/duckdb" target="_blank" rel="noopener noreferrer">DuckDB</a>.
-  </div>
-  <div class="card">
-    Ask for help, or share your work or ideas, on the <a href="https://talk.observablehq.com/" target="_blank" rel="noopener noreferrer">Observable forum</a>.
-  </div>
-  <div class="card">
-    Visit <a href="https://github.com/observablehq/framework" target="_blank" rel="noopener noreferrer">Framework on GitHub</a> and give us a star. Or file an issue if you’ve found a bug!
+   Understand and customize how AutoBalter runs performance tests in the <a href="./index.md">Specification</a> tab.
   </div>
 </div>
 </main>
 <footer id="observablehq-footer">
-<nav><a rel="next" href="./demo-daily.html"><span>Daily Dashboard</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-05-29T13:57:44">May 29, 2024</a>.</div>
+<nav><a rel="next" href="./demo-api-overview"><span>API Overview</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-03T11:05:33">Jun 3, 2024</a>.</div>
 </footer>
 </div>
