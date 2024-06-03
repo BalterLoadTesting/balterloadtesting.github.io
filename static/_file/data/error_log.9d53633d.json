@@ -1,0 +1,17 @@
+[
+    {
+        "Response Code": "400",
+        "Request": "{\"username\": \"/[a-zA-Z]{26,}/\", \"password\": \"/*/\" }",
+        "Response": ""
+    },
+    {
+        "Response Code": "400",
+        "Request": "{\"username\": \"/[]{26,}/\", \"password\": \"/*/\" }",
+        "Response": ""
+    },
+    {
+        "Response Code": "400",
+        "Request": "{\"username\": \"/[a-zA-Z]{,26}/\", \"password\": \"/[a-z][A-Z]{64,}/\" }",
+        "Response": ""
+    }
+]
