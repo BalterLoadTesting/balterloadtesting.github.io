@@ -58,11 +58,21 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/error_log.json", {"name":"./data/error_log.json","mimeType":"application/json","path":"./_file/data/error_log.9d53633d.json","lastModified":1717187964256});
-registerFile("./data/errors.csv", {"name":"./data/errors.csv","mimeType":"text/csv","path":"./_file/data/errors.2640f617.csv","lastModified":1717185665515});
-registerFile("./data/latency.csv", {"name":"./data/latency.csv","mimeType":"text/csv","path":"./_file/data/latency.9463a9fe.csv","lastModified":1717185005646});
+registerFile("./data/error_log.json", {"name":"./data/error_log.json","mimeType":"application/json","path":"./_file/data/error_log.9d53633d.json","lastModified":1717762687605});
+registerFile("./data/errors-1.csv", {"name":"./data/errors-1.csv","mimeType":"text/csv","path":"./_file/data/errors-1.919dd593.csv","lastModified":1717774193908});
+registerFile("./data/errors-2.csv", {"name":"./data/errors-2.csv","mimeType":"text/csv","path":"./_file/data/errors-2.bc49ecba.csv","lastModified":1717774870092});
+registerFile("./data/errors-3.csv", {"name":"./data/errors-3.csv","mimeType":"text/csv","path":"./_file/data/errors-3.4af92e2c.csv","lastModified":1717775205836});
+registerFile("./data/errors-4.csv", {"name":"./data/errors-4.csv","mimeType":"text/csv","path":"./_file/data/errors-4.7374e3bc.csv","lastModified":1717774582922});
+registerFile("./data/errors-5.csv", {"name":"./data/errors-5.csv","mimeType":"text/csv","path":"./_file/data/errors-5.e534c924.csv","lastModified":1717775406180});
+registerFile("./data/errors.csv", {"name":"./data/errors.csv","mimeType":"text/csv","path":"./_file/data/errors.7edb1fa6.csv","lastModified":1717773905265});
+registerFile("./data/latency-0.csv", {"name":"./data/latency-0.csv","mimeType":"text/csv","path":"./_file/data/latency-0.1523413f.csv","lastModified":1717508397342});
+registerFile("./data/latency-1.csv", {"name":"./data/latency-1.csv","mimeType":"text/csv","path":"./_file/data/latency-1.6cd3b174.csv","lastModified":1717522274196});
+registerFile("./data/latency-2.csv", {"name":"./data/latency-2.csv","mimeType":"text/csv","path":"./_file/data/latency-2.39a8d654.csv","lastModified":1717760514408});
+registerFile("./data/latency-3.csv", {"name":"./data/latency-3.csv","mimeType":"text/csv","path":"./_file/data/latency-3.89b4d3b4.csv","lastModified":1717760589840});
+registerFile("./data/latency-4.csv", {"name":"./data/latency-4.csv","mimeType":"text/csv","path":"./_file/data/latency-4.c4a33004.csv","lastModified":1717760367287});
+registerFile("./data/latency-5.csv", {"name":"./data/latency-5.csv","mimeType":"text/csv","path":"./_file/data/latency-5.7ac43429.csv","lastModified":1717775342997});
 
-define({id: "6057ddd6", inputs: ["Plot","htl"], outputs: ["latency_colors","error_colors","codeView"], body: (Plot,htl) => {
+define({id: "95cc5caf", inputs: ["Plot","htl","Inputs"], outputs: ["latency_colors","error_colors","codeView","latencyPlot","errorPlot","errorLogTable"], body: (Plot,htl,Inputs) => {
 const latency_colors = Plot.scale({
   color: {
     type: "categorical",
@@ -85,21 +95,6 @@ function codeView(x) {
     </code>`
 }
 
-return {latency_colors,error_colors,codeView};
-}});
-
-define({id: "1e091b96", inputs: ["view","Inputs"], outputs: ["rgb"], body: (view,Inputs) => {
-const rgb = view(Inputs.form([
-  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 10000}),
-  Inputs.number([0, Infinity], {step: 1, label: "Latency (ms)", value: 100}),
-  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 30})
-]));
-return {rgb};
-}});
-
-define({id: "00d505fe", inputs: ["FileAttachment","Plot","latency_colors"], outputs: ["latency_0","latencyPlot"], body: (FileAttachment,Plot,latency_colors) => {
-const latency_0 = FileAttachment("./data/latency.csv").csv({typed: true});
-
 function latencyPlot(data, {width} = {}) {
   return Plot.plot({
     title: "Latency vs. TPS",
@@ -109,43 +104,12 @@ function latencyPlot(data, {width} = {}) {
     x: {grid: true, label: "Transactions Per Second"},
     color: {...latency_colors, legend: true},
     marks: [
-      Plot.line(data, {y: "latency", x: "actual_tps", marker:true, stroke: "quantile", tip:true}),
+      Plot.line(data, {y: "latency", x: "tps", marker:true, stroke: "quantile", tip:true}),
     ]
   });
 }
-return {latency_0,latencyPlot};
-}});
-
-define({id: "52d64e50", inline: true, inputs: ["resize","latencyPlot","latency_0","display"], body: async (resize,latencyPlot,latency_0,display) => {
-display(await(
-resize((width) => latencyPlot(latency_0, {width}))
-))
-}});
-
-define({id: "7800409a", inputs: ["FileAttachment","Plot","error_colors"], outputs: ["errors_0","errorPlot"], body: (FileAttachment,Plot,error_colors) => {
-const errors_0 = FileAttachment("./data/errors.csv").csv({typed: true});
 
 function errorPlot(data, {width}) {
-/*
-  const d1 = _.filter(data, {'quantile': 'p90'});
-  const d2 = _.map(d1, (d) => {
-    return {
-      tps: d['tps'],
-      count: d['success'],
-      status: '2xx',
-    };
-  });
-  const d3 = _.map(d1, (d) => {
-    return {
-      tps: d['tps'],
-      count: d['error'],
-      status: '5xx',
-    };
-  });
-
-  const d4 = _.concat(d2, d3);
-  */
-
   return Plot.plot({
     title: "Response Codes",
     width,
@@ -153,7 +117,7 @@ function errorPlot(data, {width}) {
     marginTop: 20,
     marginLeft: 50,
     x: {grid: true, label: "Transactions Per Second"},
-    y: {label: "Error Count"},
+    y: {label: "Count"},
     color: {...error_colors, legend: true},
     marks: [
       //Plot.rectY(data, Plot.binX({y: "count"}, {x: "tps", fill: "errorcode", tip: true})),
@@ -163,7 +127,42 @@ function errorPlot(data, {width}) {
     ]
   });
 }
-return {errors_0,errorPlot};
+
+function errorLogTable(data, {width}) {
+    return Inputs.table(data, {
+        format: {
+            Request: (x) => htl.html`<code>${x}</code>`,
+        },
+        sort: "Response Code",
+        layout: "layout",
+    });
+}
+
+return {latency_colors,error_colors,codeView,latencyPlot,errorPlot,errorLogTable};
+}});
+
+define({id: "ce3aa722", inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.form([
+  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 10000}),
+  Inputs.number([0, Infinity], {step: 1, label: "p90 Latency (ms)", value: 2000}),
+  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 30})
+]));
+}});
+
+define({id: "63401e1b", inputs: ["FileAttachment"], outputs: ["latency_0"], body: (FileAttachment) => {
+const latency_0 = FileAttachment("./data/latency-0.csv").csv({typed: true});
+return {latency_0};
+}});
+
+define({id: "52d64e50", inline: true, inputs: ["resize","latencyPlot","latency_0","display"], body: async (resize,latencyPlot,latency_0,display) => {
+display(await(
+resize((width) => latencyPlot(latency_0, {width}))
+))
+}});
+
+define({id: "673ad75c", inputs: ["FileAttachment"], outputs: ["errors_0"], body: (FileAttachment) => {
+const errors_0 = FileAttachment("./data/errors.csv").csv({typed: true});
+return {errors_0};
 }});
 
 define({id: "ff8701c4", inline: true, inputs: ["resize","errorPlot","errors_0","display"], body: async (resize,errorPlot,errors_0,display) => {
@@ -172,24 +171,248 @@ resize((width) => errorPlot(errors_0, {width}))
 ))
 }});
 
-define({id: "4f6fc0ae", inputs: ["FileAttachment","Inputs","htl"], outputs: ["errorlog_0","errorLogTable"], body: (FileAttachment,Inputs,htl) => {
+define({id: "7fe25d17", inputs: ["FileAttachment"], outputs: ["errorlog_0"], body: (FileAttachment) => {
 const errorlog_0 = FileAttachment("./data/error_log.json").json();
-
-function errorLogTable(data, {width}) {
-    return Inputs.table(data, {
-        format: {
-            Request: (x) => htl.html`<code>${x}</code>`,
-        },
-        layout: "layout",
-    });
-}
-return {errorlog_0,errorLogTable};
+return {errorlog_0};
 }});
 
 define({id: "1eec3c8b", inline: true, inputs: ["resize","errorLogTable","errorlog_0","display"], body: async (resize,errorLogTable,errorlog_0,display) => {
 display(await(
 resize((width) => errorLogTable(errorlog_0, {width}))
 ))
+}});
+
+define({id: "ee435689", inline: true, inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.button("Add regression test"))
+}});
+
+define({id: "aef62b46", inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.form([
+  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 50000}),
+  Inputs.number([0, Infinity], {step: 1, label: "p90 Latency (ms)", value: 1000}),
+  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 15})
+]));
+}});
+
+define({id: "dc8d7342", inputs: ["FileAttachment"], outputs: ["latency_1"], body: (FileAttachment) => {
+const latency_1 = FileAttachment("./data/latency-1.csv").csv({typed: true});
+return {latency_1};
+}});
+
+define({id: "c5e444bb", inline: true, inputs: ["resize","latencyPlot","latency_1","display"], body: async (resize,latencyPlot,latency_1,display) => {
+display(await(
+resize((width) => latencyPlot(latency_1, {width}))
+))
+}});
+
+define({id: "ede9c9de", inputs: ["FileAttachment"], outputs: ["errors_1"], body: (FileAttachment) => {
+const errors_1 = FileAttachment("./data/errors-1.csv").csv({typed: true});
+return {errors_1};
+}});
+
+define({id: "5664491c", inline: true, inputs: ["resize","errorPlot","errors_1","display"], body: async (resize,errorPlot,errors_1,display) => {
+display(await(
+resize((width) => errorPlot(errors_1, {width}))
+))
+}});
+
+define({id: "898236da", inputs: ["FileAttachment"], outputs: ["errorlog_1"], body: (FileAttachment) => {
+const errorlog_1 = FileAttachment("./data/error_log.json").json();
+return {errorlog_1};
+}});
+
+define({id: "d237979c", inline: true, inputs: ["resize","errorLogTable","errorlog_1","display"], body: async (resize,errorLogTable,errorlog_1,display) => {
+display(await(
+resize((width) => errorLogTable(errorlog_1, {width}))
+))
+}});
+
+define({id: "ee435689-1", inline: true, inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.button("Add regression test"))
+}});
+
+define({id: "83ceb07f", inputs: ["view","Inputs"], outputs: ["rgb"], body: (view,Inputs) => {
+const rgb = view(Inputs.form([
+  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 50000}),
+  Inputs.number([0, Infinity], {step: 1, label: "p90 Latency (ms)", value: 5000}),
+  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 15})
+]));
+return {rgb};
+}});
+
+define({id: "cd92ed8d", inputs: ["FileAttachment"], outputs: ["latency_4"], body: (FileAttachment) => {
+const latency_4 = FileAttachment("./data/latency-4.csv").csv({typed: true});
+return {latency_4};
+}});
+
+define({id: "e4261a25", inline: true, inputs: ["resize","latencyPlot","latency_4","display"], body: async (resize,latencyPlot,latency_4,display) => {
+display(await(
+resize((width) => latencyPlot(latency_4, {width}))
+))
+}});
+
+define({id: "d3e55cd2", inputs: ["FileAttachment"], outputs: ["errors_4"], body: (FileAttachment) => {
+const errors_4 = FileAttachment("./data/errors-4.csv").csv({typed: true});
+return {errors_4};
+}});
+
+define({id: "ae4a48b4", inline: true, inputs: ["resize","errorPlot","errors_4","display"], body: async (resize,errorPlot,errors_4,display) => {
+display(await(
+resize((width) => errorPlot(errors_4, {width}))
+))
+}});
+
+define({id: "1e6fcd94", inputs: ["FileAttachment"], outputs: ["errorlog_4"], body: (FileAttachment) => {
+const errorlog_4 = FileAttachment("./data/error_log.json").json();
+return {errorlog_4};
+}});
+
+define({id: "b273fbd0", inline: true, inputs: ["resize","errorLogTable","errorlog_4","display"], body: async (resize,errorLogTable,errorlog_4,display) => {
+display(await(
+resize((width) => errorLogTable(errorlog_4, {width}))
+))
+}});
+
+define({id: "ee435689-2", inline: true, inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.button("Add regression test"))
+}});
+
+define({id: "4858a0d0", inputs: ["view","Inputs"], outputs: ["rgb"], body: (view,Inputs) => {
+const rgb = view(Inputs.form([
+  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 50000}),
+  Inputs.number([0, Infinity], {step: 1, label: "p90 Latency (ms)", value: 1000}),
+  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 30})
+]));
+return {rgb};
+}});
+
+define({id: "89114bd8", inputs: ["FileAttachment"], outputs: ["latency_2"], body: (FileAttachment) => {
+const latency_2 = FileAttachment("./data/latency-2.csv").csv({typed: true});
+return {latency_2};
+}});
+
+define({id: "15267cf0", inline: true, inputs: ["resize","latencyPlot","latency_2","display"], body: async (resize,latencyPlot,latency_2,display) => {
+display(await(
+resize((width) => latencyPlot(latency_2, {width}))
+))
+}});
+
+define({id: "03eb203f", inputs: ["FileAttachment"], outputs: ["errors_2"], body: (FileAttachment) => {
+const errors_2 = FileAttachment("./data/errors-2.csv").csv({typed: true});
+return {errors_2};
+}});
+
+define({id: "1c459fab", inline: true, inputs: ["resize","errorPlot","errors_2","display"], body: async (resize,errorPlot,errors_2,display) => {
+display(await(
+resize((width) => errorPlot(errors_2, {width}))
+))
+}});
+
+define({id: "85f7bbdf", inputs: ["FileAttachment"], outputs: ["errorlog_2"], body: (FileAttachment) => {
+const errorlog_2 = FileAttachment("./data/error_log.json").json();
+return {errorlog_2};
+}});
+
+define({id: "219649e7", inline: true, inputs: ["resize","errorLogTable","errorlog_2","display"], body: async (resize,errorLogTable,errorlog_2,display) => {
+display(await(
+resize((width) => errorLogTable(errorlog_2, {width}))
+))
+}});
+
+define({id: "ee435689-3", inline: true, inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.button("Add regression test"))
+}});
+
+define({id: "9ad78af5", inputs: ["view","Inputs"], outputs: ["rgb"], body: (view,Inputs) => {
+const rgb = view(Inputs.form([
+  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 5000}),
+  Inputs.number([0, Infinity], {step: 1, label: "p90 Latency (ms)", value: 1000}),
+  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 15})
+]));
+return {rgb};
+}});
+
+define({id: "19e4ea36", inputs: ["FileAttachment"], outputs: ["latency_3"], body: (FileAttachment) => {
+const latency_3 = FileAttachment("./data/latency-3.csv").csv({typed: true});
+return {latency_3};
+}});
+
+define({id: "3e97faa2", inline: true, inputs: ["resize","latencyPlot","latency_3","display"], body: async (resize,latencyPlot,latency_3,display) => {
+display(await(
+resize((width) => latencyPlot(latency_3, {width}))
+))
+}});
+
+define({id: "f2bf1703", inputs: ["FileAttachment"], outputs: ["errors_3"], body: (FileAttachment) => {
+const errors_3 = FileAttachment("./data/errors-3.csv").csv({typed: true});
+return {errors_3};
+}});
+
+define({id: "e8af8ce5", inline: true, inputs: ["resize","errorPlot","errors_3","display"], body: async (resize,errorPlot,errors_3,display) => {
+display(await(
+resize((width) => errorPlot(errors_3, {width}))
+))
+}});
+
+define({id: "3f3ff108", inputs: ["FileAttachment"], outputs: ["errorlog_3"], body: (FileAttachment) => {
+const errorlog_3 = FileAttachment("./data/error_log.json").json();
+return {errorlog_3};
+}});
+
+define({id: "0b25cc11", inline: true, inputs: ["resize","errorLogTable","errorlog_3","display"], body: async (resize,errorLogTable,errorlog_3,display) => {
+display(await(
+resize((width) => errorLogTable(errorlog_3, {width}))
+))
+}});
+
+define({id: "ee435689-4", inline: true, inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.button("Add regression test"))
+}});
+
+define({id: "9ad78af5-1", inputs: ["view","Inputs"], outputs: ["rgb"], body: (view,Inputs) => {
+const rgb = view(Inputs.form([
+  Inputs.number([0, Infinity], {step: 1, label: "TPS", value: 5000}),
+  Inputs.number([0, Infinity], {step: 1, label: "p90 Latency (ms)", value: 1000}),
+  Inputs.range([0, 100], {step: 1, label: "Error Rate", value: 15})
+]));
+return {rgb};
+}});
+
+define({id: "255ae8f7", inputs: ["FileAttachment"], outputs: ["latency_5"], body: (FileAttachment) => {
+const latency_5 = FileAttachment("./data/latency-5.csv").csv({typed: true});
+return {latency_5};
+}});
+
+define({id: "8ea6cb6f", inline: true, inputs: ["resize","latencyPlot","latency_5","display"], body: async (resize,latencyPlot,latency_5,display) => {
+display(await(
+resize((width) => latencyPlot(latency_5, {width}))
+))
+}});
+
+define({id: "a46e7086", inputs: ["FileAttachment"], outputs: ["errors_5"], body: (FileAttachment) => {
+const errors_5 = FileAttachment("./data/errors-5.csv").csv({typed: true});
+return {errors_5};
+}});
+
+define({id: "441242ed", inline: true, inputs: ["resize","errorPlot","errors_5","display"], body: async (resize,errorPlot,errors_5,display) => {
+display(await(
+resize((width) => errorPlot(errors_5, {width}))
+))
+}});
+
+define({id: "06389801", inputs: ["FileAttachment"], outputs: ["errorlog_5"], body: (FileAttachment) => {
+const errorlog_5 = FileAttachment("./data/error_log.json").json();
+return {errorlog_5};
+}});
+
+define({id: "1d3fe225", inline: true, inputs: ["resize","errorLogTable","errorlog_5","display"], body: async (resize,errorLogTable,errorlog_5,display) => {
+display(await(
+resize((width) => errorLogTable(errorlog_5, {width}))
+))
+}});
+
+define({id: "ee435689-5", inline: true, inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.button("Add regression test"))
 }});
 
 </script>
@@ -201,10 +424,10 @@ resize((width) => errorLogTable(errorlog_0, {width}))
     <li class="observablehq-link"><a href="./">AutoBalter Demo</a></li>
   </ol>
   <ol>
-    <li class="observablehq-link observablehq-link-active"><a href="./demo-api-overview">API Overview</a></li>
-    <li class="observablehq-link"><a href="./demo-history">Historical Trends</a></li>
-    <li class="observablehq-link"><a href="./demo-report">Report</a></li>
-    <li class="observablehq-link"><a href="./demo-specification">Specification</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./demo-api-overview.html">API Overview</a></li>
+    <li class="observablehq-link"><a href="./demo-history.html">Historical Trends</a></li>
+    <li class="observablehq-link"><a href="./demo-report.html">Report</a></li>
+    <li class="observablehq-link"><a href="./demo-specification.html">Specification</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
@@ -212,7 +435,7 @@ resize((width) => errorLogTable(errorlog_0, {width}))
 <main id="observablehq-main" class="observablehq">
 <h1 id="api-overview" tabindex="-1"><a class="observablehq-header-anchor" href="#api-overview">API Overview</a></h1>
 <!-- Setup Shared Functions -->
-<div id="cell-6057ddd6" class="observablehq observablehq--block"></div>
+<div id="cell-95cc5caf" class="observablehq observablehq--block"></div>
 <hr>
 <h2 id="post-%2Fusers%2Fnew" tabindex="-1"><a class="observablehq-header-anchor" href="#post-%2Fusers%2Fnew">POST <code>/users/new</code></a></h2>
 <pre><code>POST /users/new {
@@ -221,7 +444,10 @@ resize((width) => errorLogTable(errorlog_0, {width}))
 }
 </code></pre>
 <h3 id="stop-limits" tabindex="-1"><a class="observablehq-header-anchor" href="#stop-limits">Stop Limits</a></h3>
-<div id="cell-1e091b96" class="observablehq observablehq--block"></div>
+<div class="tip">
+<p>Configurable <strong>Stop Limits</strong> prevents AutoBalter from overloading the service. Saturate your endpoints without taking the entire stack down (or do, AutoBalter can scale indefinitely)</p>
+</div>
+<div id="cell-ce3aa722" class="observablehq observablehq--block"></div>
 <h3 id="latest-load-test" tabindex="-1"><a class="observablehq-header-anchor" href="#latest-load-test">Latest Load Test</a></h3>
 <div class="grid grid-cols-3">
   <div class="card">
@@ -230,7 +456,7 @@ resize((width) => errorLogTable(errorlog_0, {width}))
   </div>
   <div class="card">
     <h2>Max Latency (p90)</h2>
-    <span class="big">134.20ms</span>
+    <span class="big">2.47s</span>
   </div>
   <div class="card">
     <h2>Max Error Rate</h2>
@@ -238,30 +464,268 @@ resize((width) => errorLogTable(errorlog_0, {width}))
   </div>
 </div>
 <!-- Plot of launch history -->
-<div id="cell-00d505fe" class="observablehq observablehq--block"></div>
+<div id="cell-63401e1b" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <span id="cell-52d64e50"><span class="observablehq-loading"></span></span>
   </div>
 </div>
 <!-- Plot of launch vehicles -->
-<div id="cell-7800409a" class="observablehq observablehq--block"></div>
+<div id="cell-673ad75c" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <span id="cell-ff8701c4"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<div id="cell-4f6fc0ae" class="observablehq observablehq--block"></div>
+<div id="cell-7fe25d17" class="observablehq observablehq--block"></div>
+<div class="tip">
+<p>AutoBalter <strong>automatically fuzzes</strong> every endpoint it targets, using the OpenAPI specification as a starting point. Adding regression tests is as easy as selecting the request you want to re-run each time and clicking "Add regression test."</p>
+</div>
 <div class="grid grid-cols-1">
   <div class="card">
     <h2>Error Log</h2>
     <span id="cell-1eec3c8b"><span class="observablehq-loading"></span></span>
+<p><span id="cell-ee435689"><span class="observablehq-loading"></span></span></p>
   </div>
 </div>
 <hr>
+<h2 id="get-%2Fstories" tabindex="-1"><a class="observablehq-header-anchor" href="#get-%2Fstories">GET <code>/stories</code></a></h2>
+<pre><code>GET /stories {
+    next_token?: "string"
+}
+</code></pre>
+<h3 id="stop-limits-1" tabindex="-1"><a class="observablehq-header-anchor" href="#stop-limits-1">Stop Limits</a></h3>
+<div id="cell-aef62b46" class="observablehq observablehq--block"></div>
+<h3 id="latest-load-test-1" tabindex="-1"><a class="observablehq-header-anchor" href="#latest-load-test-1">Latest Load Test</a></h3>
+<div class="grid grid-cols-3">
+  <div class="card">
+    <h2>Max TPS</h2>
+    <span class="big">23,003</span>
+  </div>
+  <div class="card">
+    <h2>Max Latency (p90)</h2>
+    <span class="big">1.01s</span>
+  </div>
+  <div class="card">
+    <h2>Max Error Rate</h2>
+    <span class="big">7.3%</span>
+  </div>
+</div>
+<!-- Plot of launch history -->
+<div id="cell-dc8d7342" class="observablehq observablehq--block"></div>
+<div class="tip">
+<p>AutoBalter evaluates your service at all load levels, allowing you to identify potential scaling issues before they occur in production.</p>
+</div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-c5e444bb"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<!-- Plot of launch vehicles -->
+<div id="cell-ede9c9de" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-5664491c"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div id="cell-898236da" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <h2>Error Log</h2>
+    <span id="cell-d237979c"><span class="observablehq-loading"></span></span>
+<p><span id="cell-ee435689-1"><span class="observablehq-loading"></span></span></p>
+  </div>
+</div>
+<hr>
+<h2 id="get-%2Fstories%2F%7Bstory_id%7D" tabindex="-1"><a class="observablehq-header-anchor" href="#get-%2Fstories%2F%7Bstory_id%7D">GET <code>/stories/{story_id}</code></a></h2>
+<pre><code>GET /stories/{story_id} {
+}
+</code></pre>
+<h3 id="stop-limits-2" tabindex="-1"><a class="observablehq-header-anchor" href="#stop-limits-2">Stop Limits</a></h3>
+<div id="cell-83ceb07f" class="observablehq observablehq--block"></div>
+<h3 id="latest-load-test-2" tabindex="-1"><a class="observablehq-header-anchor" href="#latest-load-test-2">Latest Load Test</a></h3>
+<div class="tip">
+<p>AutoBalter automatically scales to match the needs of your service. There is no limit to how many transactions per second AutoBalter can generate.</p>
+</div>
+<div class="grid grid-cols-3">
+  <div class="card">
+    <h2>Max TPS</h2>
+    <span class="big">50,205</span>
+  </div>
+  <div class="card">
+    <h2>Max Latency (p90)</h2>
+    <span class="big">2.70s</span>
+  </div>
+  <div class="card">
+    <h2>Max Error Rate</h2>
+    <span class="big">6.82%</span>
+  </div>
+</div>
+<!-- Plot of launch history -->
+<div id="cell-cd92ed8d" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-e4261a25"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<!-- Plot of launch vehicles -->
+<div id="cell-d3e55cd2" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-ae4a48b4"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div id="cell-1e6fcd94" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <h2>Error Log</h2>
+    <span id="cell-b273fbd0"><span class="observablehq-loading"></span></span>
+<p><span id="cell-ee435689-2"><span class="observablehq-loading"></span></span></p>
+  </div>
+</div>
+<hr>
+<h2 id="post-%2Fusers%2Flogin" tabindex="-1"><a class="observablehq-header-anchor" href="#post-%2Fusers%2Flogin">POST <code>/users/login</code></a></h2>
+<pre><code>POST /users/login {
+    username?: "string"
+    user_id?: "number"
+    password: "string"
+}
+</code></pre>
+<h3 id="stop-limits-3" tabindex="-1"><a class="observablehq-header-anchor" href="#stop-limits-3">Stop Limits</a></h3>
+<div id="cell-4858a0d0" class="observablehq observablehq--block"></div>
+<h3 id="latest-load-test-3" tabindex="-1"><a class="observablehq-header-anchor" href="#latest-load-test-3">Latest Load Test</a></h3>
+<div class="grid grid-cols-3">
+  <div class="card">
+    <h2>Max TPS</h2>
+    <span class="big">1,498</span>
+  </div>
+  <div class="card">
+    <h2>Max Latency (p90)</h2>
+    <span class="big">1.05s</span>
+  </div>
+  <div class="card">
+    <h2>Max Error Rate</h2>
+    <span class="big">34.0%</span>
+  </div>
+</div>
+<!-- Plot of launch history -->
+<div id="cell-89114bd8" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-15267cf0"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<!-- Plot of launch vehicles -->
+<div id="cell-03eb203f" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-1c459fab"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div id="cell-85f7bbdf" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <h2>Error Log</h2>
+    <span id="cell-219649e7"><span class="observablehq-loading"></span></span>
+<p><span id="cell-ee435689-3"><span class="observablehq-loading"></span></span></p>
+  </div>
+</div>
+<hr>
+<h2 id="post-%2Fstories" tabindex="-1"><a class="observablehq-header-anchor" href="#post-%2Fstories">POST <code>/stories</code></a></h2>
+<pre><code>POST /stories {
+    title: "string",
+    url?: "string",
+    text?: "string"
+}
+</code></pre>
+<h3 id="stop-limits-4" tabindex="-1"><a class="observablehq-header-anchor" href="#stop-limits-4">Stop Limits</a></h3>
+<div id="cell-9ad78af5" class="observablehq observablehq--block"></div>
+<h3 id="latest-load-test-4" tabindex="-1"><a class="observablehq-header-anchor" href="#latest-load-test-4">Latest Load Test</a></h3>
+<div class="grid grid-cols-3">
+  <div class="card">
+    <h2>Max TPS</h2>
+    <span class="big">5,001</span>
+  </div>
+  <div class="card">
+    <h2>Max Latency (p90)</h2>
+    <span class="big">531ms</span>
+  </div>
+  <div class="card">
+    <h2>Max Error Rate</h2>
+    <span class="big">1.5%</span>
+  </div>
+</div>
+<!-- Plot of launch history -->
+<div id="cell-19e4ea36" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-3e97faa2"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<!-- Plot of launch vehicles -->
+<div id="cell-f2bf1703" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-e8af8ce5"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div id="cell-3f3ff108" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <h2>Error Log</h2>
+    <span id="cell-0b25cc11"><span class="observablehq-loading"></span></span>
+<p><span id="cell-ee435689-4"><span class="observablehq-loading"></span></span></p>
+  </div>
+</div>
+<hr>
+<h2 id="post-%2Fstories%2F%7Bstory_id%7D%2Fcomments" tabindex="-1"><a class="observablehq-header-anchor" href="#post-%2Fstories%2F%7Bstory_id%7D%2Fcomments">POST <code>/stories/{story_id}/comments</code></a></h2>
+<pre><code>POST /stories/{story_id}/comments {
+    text: "string",
+    parent_id?: "number"
+}
+</code></pre>
+<h3 id="stop-limits-5" tabindex="-1"><a class="observablehq-header-anchor" href="#stop-limits-5">Stop Limits</a></h3>
+<div id="cell-9ad78af5-1" class="observablehq observablehq--block"></div>
+<h3 id="latest-load-test-5" tabindex="-1"><a class="observablehq-header-anchor" href="#latest-load-test-5">Latest Load Test</a></h3>
+<div class="grid grid-cols-3">
+  <div class="card">
+    <h2>Max TPS</h2>
+    <span class="big">5,003</span>
+  </div>
+  <div class="card">
+    <h2>Max Latency (p90)</h2>
+    <span class="big">571ms</span>
+  </div>
+  <div class="card">
+    <h2>Max Error Rate</h2>
+    <span class="big">1.1%</span>
+  </div>
+</div>
+<!-- Plot of launch history -->
+<div id="cell-255ae8f7" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-8ea6cb6f"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<!-- Plot of launch vehicles -->
+<div id="cell-a46e7086" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-441242ed"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div id="cell-06389801" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <h2>Error Log</h2>
+    <span id="cell-1d3fe225"><span class="observablehq-loading"></span></span>
+<p><span id="cell-ee435689-5"><span class="observablehq-loading"></span></span></p>
+  </div>
+</div>
 </main>
 <footer id="observablehq-footer">
-<nav><a rel="prev" href="./"><span>AutoBalter Demo</span></a><a rel="next" href="./demo-history"><span>Historical Trends</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-03T11:05:33">Jun 3, 2024</a>.</div>
+<nav><a rel="prev" href="./"><span>AutoBalter Demo</span></a><a rel="next" href="./demo-history.html"><span>Historical Trends</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-07T11:50:42">Jun 7, 2024</a>.</div>
 </footer>
 </div>

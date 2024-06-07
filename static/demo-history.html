@@ -54,38 +54,64 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/latency.csv", {"name":"./data/latency.csv","mimeType":"text/csv","path":"./_file/data/latency.9463a9fe.csv","lastModified":1717185005646});
+registerFile("./data/error-history.csv", {"name":"./data/error-history.csv","mimeType":"text/csv","path":"./_file/data/error-history.2ce1a82b.csv","lastModified":1717441355489});
+registerFile("./data/latency-history.csv", {"name":"./data/latency-history.csv","mimeType":"text/csv","path":"./_file/data/latency-history.fded12dd.csv","lastModified":1717440987791});
 
-define({id: "4e0a1695", inputs: ["FileAttachment","Plot"], outputs: ["latency","latency_colors","latencyPlot"], body: (FileAttachment,Plot) => {
-const latency = FileAttachment("./data/latency.csv").csv({typed: true});
+define({id: "a6ee6724", inputs: ["FileAttachment","Plot"], outputs: ["latency","api_colors","latencyPlot"], body: (FileAttachment,Plot) => {
+const latency = FileAttachment("./data/latency-history.csv").csv({typed: true});
 
-const latency_colors = Plot.scale({
+const api_colors = Plot.scale({
   color: {
     type: "categorical",
-    domain: ["p50", "p90", "p95", "p99"],
+    domain: ["POST /users/new", "POST /users/login", "POST /stories", "GET /stories", "GET /stories/{id}", "POST /stories/{id}/comments", "POST /stories"],
     unknown: "var(--theme-foreground-muted)"
   }
 });
 
 function latencyPlot(data, {width} = {}) {
   return Plot.plot({
-    title: "p90 Latency Historical",
+    title: "p90 Latency Tracking",
     width,
     height: 300,
     y: {grid: true, label: "Latency (ms)"},
-    x: {grid: true, label: "Transactions Per Second"},
-    color: {...latency_colors, legend: true},
+    x: {grid: true, label: "Date"},
+    color: {...api_colors, legend: true},
     marks: [
-      Plot.line(data, {y: "latency", x: "tps", marker:true, stroke: "quantile", tip:true}),
+      Plot.line(data, {y: "latency", x: "date", marker:true, stroke: "api", tip:true}),
     ]
   });
 }
-return {latency,latency_colors,latencyPlot};
+return {latency,api_colors,latencyPlot};
 }});
 
 define({id: "c59a4e61", inline: true, inputs: ["resize","latencyPlot","latency","display"], body: async (resize,latencyPlot,latency,display) => {
 display(await(
 resize((width) => latencyPlot(latency, {width}))
+))
+}});
+
+define({id: "9834da55", inputs: ["FileAttachment","Plot","api_colors"], outputs: ["error","errorPlot"], body: (FileAttachment,Plot,api_colors) => {
+const error = FileAttachment("./data/error-history.csv").csv({typed: true});
+
+function errorPlot(data, {width} = {}) {
+  return Plot.plot({
+    title: "Error Rate Tracking",
+    width,
+    height: 300,
+    y: {grid: true, label: "Error Rate (Percentage)"},
+    x: {grid: true, label: "Date"},
+    color: {...api_colors, legend: true},
+    marks: [
+      Plot.line(data, {y: "error_rate", x: "date", marker:true, stroke: "api", tip:true}),
+    ]
+  });
+}
+return {error,errorPlot};
+}});
+
+define({id: "57b6dd4e", inline: true, inputs: ["resize","errorPlot","error","display"], body: async (resize,errorPlot,error,display) => {
+display(await(
+resize((width) => errorPlot(error, {width}))
 ))
 }});
 
@@ -98,10 +124,10 @@ resize((width) => latencyPlot(latency, {width}))
     <li class="observablehq-link"><a href="./">AutoBalter Demo</a></li>
   </ol>
   <ol>
-    <li class="observablehq-link"><a href="./demo-api-overview">API Overview</a></li>
-    <li class="observablehq-link observablehq-link-active"><a href="./demo-history">Historical Trends</a></li>
-    <li class="observablehq-link"><a href="./demo-report">Report</a></li>
-    <li class="observablehq-link"><a href="./demo-specification">Specification</a></li>
+    <li class="observablehq-link"><a href="./demo-api-overview.html">API Overview</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./demo-history.html">Historical Trends</a></li>
+    <li class="observablehq-link"><a href="./demo-report.html">Report</a></li>
+    <li class="observablehq-link"><a href="./demo-specification.html">Specification</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
@@ -109,18 +135,21 @@ resize((width) => latencyPlot(latency, {width}))
 <main id="observablehq-main" class="observablehq">
 <h1 id="historical-trends" tabindex="-1"><a class="observablehq-header-anchor" href="#historical-trends">Historical Trends</a></h1>
 <p><em>AutoBalter can be configured to track custom, long-term statistics about your APIs. Get alerted when an API does not meet the requirements.</em></p>
-<h2 id="tps" tabindex="-1"><a class="observablehq-header-anchor" href="#tps">TPS</a></h2>
-<h2 id="latency" tabindex="-1"><a class="observablehq-header-anchor" href="#latency">Latency</a></h2>
-<div id="cell-4e0a1695" class="observablehq observablehq--block"></div>
+<div id="cell-a6ee6724" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <span id="cell-c59a4e61"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<h2 id="error-rates" tabindex="-1"><a class="observablehq-header-anchor" href="#error-rates">Error Rates</a></h2>
+<div id="cell-9834da55" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+    <span id="cell-57b6dd4e"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
 </main>
 <footer id="observablehq-footer">
-<nav><a rel="prev" href="./demo-api-overview"><span>API Overview</span></a><a rel="next" href="./demo-report"><span>Report</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-03T11:05:33">Jun 3, 2024</a>.</div>
+<nav><a rel="prev" href="./demo-api-overview.html"><span>API Overview</span></a><a rel="next" href="./demo-report.html"><span>Report</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-07T11:50:42">Jun 7, 2024</a>.</div>
 </footer>
 </div>

@@ -17,11 +17,10 @@
 
 import {define} from "./_observablehq/client.js";
 
-define({id: "91f7d007", inputs: ["dot","display"], body: async (dot,display) => {
+define({id: "cdc012da", inputs: ["dot","display"], body: async (dot,display) => {
 display(await(
 dot`digraph G {
     rankdir = LR
-    ping [label="GET /ping"]
     login [label="POST /users/login"]
     users [label="POST /users/new"]
     list_stories [label="GET /stories"]
@@ -52,10 +51,10 @@ dot`digraph G {
     <li class="observablehq-link"><a href="./">AutoBalter Demo</a></li>
   </ol>
   <ol>
-    <li class="observablehq-link"><a href="./demo-api-overview">API Overview</a></li>
-    <li class="observablehq-link"><a href="./demo-history">Historical Trends</a></li>
-    <li class="observablehq-link"><a href="./demo-report">Report</a></li>
-    <li class="observablehq-link observablehq-link-active"><a href="./demo-specification">Specification</a></li>
+    <li class="observablehq-link"><a href="./demo-api-overview.html">API Overview</a></li>
+    <li class="observablehq-link"><a href="./demo-history.html">Historical Trends</a></li>
+    <li class="observablehq-link"><a href="./demo-report.html">Report</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./demo-specification.html">Specification</a></li>
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
@@ -64,10 +63,14 @@ dot`digraph G {
 <h1 id="openapi-specification" tabindex="-1"><a class="observablehq-header-anchor" href="#openapi-specification">OpenAPI Specification</a></h1>
 <hr>
 <h2 id="relationship-graph" tabindex="-1"><a class="observablehq-header-anchor" href="#relationship-graph">Relationship Graph</a></h2>
-<p><em>AutoBalter automatically parses the OpenAPI specification and determines relationships between APIs. This information is leveraged for all load-testing and fuzzing operations.</em></p>
-<div id="cell-91f7d007" class="observablehq observablehq--block"><span class="observablehq-loading"></span></div>
+<div class="tip">
+<p>AutoBalter automatically parses the OpenAPI specification and determines relationships between APIs. This information is leveraged for all load-testing and fuzzing operations.</p>
+</div>
+<div id="cell-cdc012da" class="observablehq observablehq--block"><span class="observablehq-loading"></span></div>
 <h2 id="raw-input" tabindex="-1"><a class="observablehq-header-anchor" href="#raw-input">Raw Input</a></h2>
-<p><em>The Raw OpenAPI input can be synced with a Git repository or your CI/CD setup, or uploaded manually.</em></p>
+<div class="tip">
+<p>The Raw OpenAPI input can be synced with a Git repository or your CI/CD setup, or uploaded manually.</p>
+</div>
 <pre><code>{
     "openapi": "3.0.1",
     "info": {
@@ -87,24 +90,6 @@ dot`digraph G {
         }
     ],
     "paths": {
-        "/ping": {
-            "get": {
-                "description": "A ping endpoint for testing. Always returns 'Pong!'",
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "example": "Pong!"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/users/login": {
             "post": {
                 "tags": [
@@ -444,7 +429,7 @@ dot`digraph G {
             "UserLogin": {
                 "type": "object",
                 "required": [
-                    "password"
+                    "password",
                 ],
                 "properties": {
                     "username": {
@@ -477,7 +462,7 @@ dot`digraph G {
 </code></pre>
 </main>
 <footer id="observablehq-footer">
-<nav><a rel="prev" href="./demo-report"><span>Report</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-03T11:05:33">Jun 3, 2024</a>.</div>
+<nav><a rel="prev" href="./demo-report.html"><span>Report</span></a></nav>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-07T11:50:42">Jun 7, 2024</a>.</div>
 </footer>
 </div>

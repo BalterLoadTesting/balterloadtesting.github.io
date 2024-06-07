@@ -1,0 +1,14 @@
+date,api,error_rate
+5/12/24,POST /users/new,30 
+5/13/24,POST /users/new,23
+5/14/24,POST /users/new,23
+5/15/24,POST /users/new,24
+5/16/24,POST /users/new,23
+5/17/24,POST /users/new,23
+5/18/24,POST /users/new,23
+5/19/24,POST /users/new,24
+5/20/24,POST /users/new,23
+5/21/24,POST /users/new,24
+5/22/24,POST /users/new,24
+5/23/24,POST /users/new,24
+5/24/24,POST /users/new,24
