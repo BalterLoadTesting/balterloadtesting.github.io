@@ -52,13 +52,18 @@
 <link rel="modulepreload" href="./_npm/internmap@2.0.3/_esm.js">
 <link rel="modulepreload" href="./_npm/delaunator@5.0.1/_esm.js">
 <link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/_esm.js">
-<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<link rel="icon" href="./favicon.ico" type="image/png">
 <script type="module">
 
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/error_log.json", {"name":"./data/error_log.json","mimeType":"application/json","path":"./_file/data/error_log.9d53633d.json","lastModified":1717762687605});
+registerFile("./data/error_log-1.json", {"name":"./data/error_log-1.json","mimeType":"application/json","path":"./_file/data/error_log-1.976a6956.json","lastModified":1717955953299});
+registerFile("./data/error_log-2.json", {"name":"./data/error_log-2.json","mimeType":"application/json","path":"./_file/data/error_log-2.5f6ffe18.json","lastModified":1717957375128});
+registerFile("./data/error_log-3.json", {"name":"./data/error_log-3.json","mimeType":"application/json","path":"./_file/data/error_log-3.4ce2a820.json","lastModified":1717965007607});
+registerFile("./data/error_log-4.json", {"name":"./data/error_log-4.json","mimeType":"application/json","path":"./_file/data/error_log-4.fe0434c0.json","lastModified":1717957029684});
+registerFile("./data/error_log-5.json", {"name":"./data/error_log-5.json","mimeType":"application/json","path":"./_file/data/error_log-5.100fbc9e.json","lastModified":1717966066953});
+registerFile("./data/error_log.json", {"name":"./data/error_log.json","mimeType":"application/json","path":"./_file/data/error_log.d4b663f0.json","lastModified":1717943183888});
 registerFile("./data/errors-1.csv", {"name":"./data/errors-1.csv","mimeType":"text/csv","path":"./_file/data/errors-1.919dd593.csv","lastModified":1717774193908});
 registerFile("./data/errors-2.csv", {"name":"./data/errors-2.csv","mimeType":"text/csv","path":"./_file/data/errors-2.bc49ecba.csv","lastModified":1717774870092});
 registerFile("./data/errors-3.csv", {"name":"./data/errors-3.csv","mimeType":"text/csv","path":"./_file/data/errors-3.4af92e2c.csv","lastModified":1717775205836});
@@ -216,8 +221,8 @@ resize((width) => errorPlot(errors_1, {width}))
 ))
 }});
 
-define({id: "898236da", inputs: ["FileAttachment"], outputs: ["errorlog_1"], body: (FileAttachment) => {
-const errorlog_1 = FileAttachment("./data/error_log.json").json();
+define({id: "f85f0076", inputs: ["FileAttachment"], outputs: ["errorlog_1"], body: (FileAttachment) => {
+const errorlog_1 = FileAttachment("./data/error_log-1.json").json();
 return {errorlog_1};
 }});
 
@@ -262,8 +267,8 @@ resize((width) => errorPlot(errors_4, {width}))
 ))
 }});
 
-define({id: "1e6fcd94", inputs: ["FileAttachment"], outputs: ["errorlog_4"], body: (FileAttachment) => {
-const errorlog_4 = FileAttachment("./data/error_log.json").json();
+define({id: "d0bd3b4e", inputs: ["FileAttachment"], outputs: ["errorlog_4"], body: (FileAttachment) => {
+const errorlog_4 = FileAttachment("./data/error_log-4.json").json();
 return {errorlog_4};
 }});
 
@@ -308,8 +313,8 @@ resize((width) => errorPlot(errors_2, {width}))
 ))
 }});
 
-define({id: "85f7bbdf", inputs: ["FileAttachment"], outputs: ["errorlog_2"], body: (FileAttachment) => {
-const errorlog_2 = FileAttachment("./data/error_log.json").json();
+define({id: "95698f95", inputs: ["FileAttachment"], outputs: ["errorlog_2"], body: (FileAttachment) => {
+const errorlog_2 = FileAttachment("./data/error_log-2.json").json();
 return {errorlog_2};
 }});
 
@@ -354,8 +359,8 @@ resize((width) => errorPlot(errors_3, {width}))
 ))
 }});
 
-define({id: "3f3ff108", inputs: ["FileAttachment"], outputs: ["errorlog_3"], body: (FileAttachment) => {
-const errorlog_3 = FileAttachment("./data/error_log.json").json();
+define({id: "a32c66ed", inputs: ["FileAttachment"], outputs: ["errorlog_3"], body: (FileAttachment) => {
+const errorlog_3 = FileAttachment("./data/error_log-3.json").json();
 return {errorlog_3};
 }});
 
@@ -400,8 +405,8 @@ resize((width) => errorPlot(errors_5, {width}))
 ))
 }});
 
-define({id: "06389801", inputs: ["FileAttachment"], outputs: ["errorlog_5"], body: (FileAttachment) => {
-const errorlog_5 = FileAttachment("./data/error_log.json").json();
+define({id: "2445cba0", inputs: ["FileAttachment"], outputs: ["errorlog_5"], body: (FileAttachment) => {
+const errorlog_5 = FileAttachment("./data/error_log-5.json").json();
 return {errorlog_5};
 }});
 
@@ -431,6 +436,19 @@ view(Inputs.button("Add regression test"))
   </ol>
 </nav>
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<aside id="observablehq-toc" data-selector="h1:not(:first-of-type)[id], h2:first-child[id], :not(h1) + h2[id]">
+<nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#post-%2Fusers%2Fnew">POST /users/new</a></li>
+<li class="observablehq-secondary-link"><a href="#get-%2Fstories">GET /stories</a></li>
+<li class="observablehq-secondary-link"><a href="#get-%2Fstories%2F%7Bstory_id%7D">GET /stories/{story_id}</a></li>
+<li class="observablehq-secondary-link"><a href="#post-%2Fusers%2Flogin">POST /users/login</a></li>
+<li class="observablehq-secondary-link"><a href="#post-%2Fstories">POST /stories</a></li>
+<li class="observablehq-secondary-link"><a href="#post-%2Fstories%2F%7Bstory_id%7D%2Fcomments">POST /stories/{story_id}/comments</a></li>
+</ol>
+</nav>
+</aside>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="api-overview" tabindex="-1"><a class="observablehq-header-anchor" href="#api-overview">API Overview</a></h1>
@@ -528,7 +546,10 @@ view(Inputs.button("Add regression test"))
     <span id="cell-5664491c"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<div id="cell-898236da" class="observablehq observablehq--block"></div>
+<div id="cell-f85f0076" class="observablehq observablehq--block"></div>
+<div class="tip">
+<p>AutoBalter will attempt to learn the API parameters and uses exhaustive paramter searching as well as AI models to determine inputs which are likely to cause issues for the system.</p>
+</div>
 <div class="grid grid-cols-1">
   <div class="card">
     <h2>Error Log</h2>
@@ -575,7 +596,7 @@ view(Inputs.button("Add regression test"))
     <span id="cell-ae4a48b4"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<div id="cell-1e6fcd94" class="observablehq observablehq--block"></div>
+<div id="cell-d0bd3b4e" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <h2>Error Log</h2>
@@ -585,6 +606,9 @@ view(Inputs.button("Add regression test"))
 </div>
 <hr>
 <h2 id="post-%2Fusers%2Flogin" tabindex="-1"><a class="observablehq-header-anchor" href="#post-%2Fusers%2Flogin">POST <code>/users/login</code></a></h2>
+<div class="tip">
+<p>APIs can be left vague, and AutoBalter will determine the relationship between parameters by exhaustive search and AI models.</p>
+</div>
 <pre><code>POST /users/login {
     username?: "string"
     user_id?: "number"
@@ -622,7 +646,7 @@ view(Inputs.button("Add regression test"))
     <span id="cell-1c459fab"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<div id="cell-85f7bbdf" class="observablehq observablehq--block"></div>
+<div id="cell-95698f95" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <h2>Error Log</h2>
@@ -655,21 +679,19 @@ view(Inputs.button("Add regression test"))
     <span class="big">1.5%</span>
   </div>
 </div>
-<!-- Plot of launch history -->
 <div id="cell-19e4ea36" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <span id="cell-3e97faa2"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<!-- Plot of launch vehicles -->
 <div id="cell-f2bf1703" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <span id="cell-e8af8ce5"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<div id="cell-3f3ff108" class="observablehq observablehq--block"></div>
+<div id="cell-a32c66ed" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <h2>Error Log</h2>
@@ -715,7 +737,7 @@ view(Inputs.button("Add regression test"))
     <span id="cell-441242ed"><span class="observablehq-loading"></span></span>
   </div>
 </div>
-<div id="cell-06389801" class="observablehq observablehq--block"></div>
+<div id="cell-2445cba0" class="observablehq observablehq--block"></div>
 <div class="grid grid-cols-1">
   <div class="card">
     <h2>Error Log</h2>
@@ -726,6 +748,6 @@ view(Inputs.button("Add regression test"))
 </main>
 <footer id="observablehq-footer">
 <nav><a rel="prev" href="./"><span>AutoBalter Demo</span></a><a rel="next" href="./demo-history.html"><span>Historical Trends</span></a></nav>
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2024-06-07T11:50:42">Jun 7, 2024</a>.</div>
+<div>BalterLoadTesting.com</div>
 </footer>
 </div>

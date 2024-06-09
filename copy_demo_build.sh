@@ -7,7 +7,7 @@ cp -r ../autobalter/demo/dist/* static/
 
 mv static/index.html static/demo-index.html
 
-fastmod --accept-all -d static/ demo-history demo-history.html
-fastmod --accept-all -d static/ demo-api-overview demo-api-overview.html
-fastmod --accept-all -d static/ demo-report demo-report.html
-fastmod --accept-all -d static/ demo-specification demo-specification.html
+#fastmod --accept-all -d static/ demo-history demo-history.html
+#fastmod --accept-all -d static/ demo-api-overview demo-api-overview.html
+#fastmod --accept-all -d static/ demo-report demo-report.html
+#fastmod --accept-all -d static/ demo-specification demo-specification.html
