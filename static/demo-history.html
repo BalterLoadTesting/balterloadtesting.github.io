@@ -5,15 +5,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
 <link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
 <link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.14/_esm.js">
-<link rel="modulepreload" href="./_npm/d3@7.9.0/_esm.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
 <link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/_esm.js">
 <link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/_esm.js">
 <link rel="modulepreload" href="./_npm/d3-array@3.2.4/_esm.js">
 <link rel="modulepreload" href="./_npm/d3-axis@3.0.0/_esm.js">
@@ -54,64 +58,94 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/error-history.csv", {"name":"./data/error-history.csv","mimeType":"text/csv","path":"./_file/data/error-history.2ce1a82b.csv","lastModified":1717441355489});
-registerFile("./data/latency-history.csv", {"name":"./data/latency-history.csv","mimeType":"text/csv","path":"./_file/data/latency-history.fded12dd.csv","lastModified":1717440987791});
+registerFile("./data/history-stories-error.csv", {"name":"./data/history-stories-error.csv","mimeType":"text/csv","path":"./_file/data/history-stories-error.babb03fa.csv","lastModified":1718026694141});
+registerFile("./data/history-stories-latency.csv", {"name":"./data/history-stories-latency.csv","mimeType":"text/csv","path":"./_file/data/history-stories-latency.45370c14.csv","lastModified":1718056370461});
+registerFile("./data/history-users-latency.csv", {"name":"./data/history-users-latency.csv","mimeType":"text/csv","path":"./_file/data/history-users-latency.0ca4e61a.csv","lastModified":1718056429403});
 
-define({id: "a6ee6724", inputs: ["FileAttachment","Plot"], outputs: ["latency","api_colors","latencyPlot"], body: (FileAttachment,Plot) => {
-const latency = FileAttachment("./data/latency-history.csv").csv({typed: true});
-
-const api_colors = Plot.scale({
-  color: {
-    type: "categorical",
-    domain: ["POST /users/new", "POST /users/login", "POST /stories", "GET /stories", "GET /stories/{id}", "POST /stories/{id}/comments", "POST /stories"],
-    unknown: "var(--theme-foreground-muted)"
-  }
-});
-
-function latencyPlot(data, {width} = {}) {
+define({id: "974e2712", inputs: ["Plot"], outputs: ["latencyHistoryPlot","errorHistoryPlot"], body: (Plot) => {
+function latencyHistoryPlot(data, {width, title, error} = {}) {
   return Plot.plot({
-    title: "p90 Latency Tracking",
+    title,
     width,
     height: 300,
     y: {grid: true, label: "Latency (ms)"},
     x: {grid: true, label: "Date"},
-    color: {...api_colors, legend: true},
     marks: [
-      Plot.line(data, {y: "latency", x: "date", marker:true, stroke: "api", tip:true}),
+      Plot.line(data, {y: "latency", x: "date", marker:true, tip:true, stroke: "#4269d0"}),
+      Plot.ruleY([error], {stroke: "red", marker: true, tip: true})
     ]
   });
 }
-return {latency,api_colors,latencyPlot};
+
+function errorHistoryPlot(data, {width, title, error} = {}) {
+  return Plot.plot({
+    title,
+    width,
+    height: 300,
+    y: {grid: true, label: "Error Rate (%)"},
+    x: {grid: true, label: "Date"},
+    marks: [
+      Plot.line(data, {y: "error_rate", x: "date", marker:true, tip:true, stroke: "#4269d0"}),
+      Plot.ruleY([error], {stroke: "red", marker: true, tip: true})
+    ]
+  });
+}
+return {latencyHistoryPlot,errorHistoryPlot};
 }});
 
-define({id: "c59a4e61", inline: true, inputs: ["resize","latencyPlot","latency","display"], body: async (resize,latencyPlot,latency,display) => {
+define({id: "6a8e4b37", inputs: ["view","Inputs"], outputs: ["apis","constraints"], body: (view,Inputs) => {
+const apis = [
+    "POST /users/new",
+    "POST /users/login",
+    "POST /stories",
+    "GET /stories",
+    "GET /stories/{story_id}",
+    "POST /stories/{story_id}/comments",
+];
+
+const constraints = [
+    "Transactions Per Second",
+    "p50 Latency (ms)",
+    "p90 Latency (ms)",
+    "p95 Latency (ms)",
+    "p99 Latency (ms)",
+    "Error Rate",
+];
+
+view(Inputs.form([
+  Inputs.select(apis, { label: "API"}),
+  Inputs.select(constraints, { label: "Constraint Kind"}),
+  Inputs.number([0, Infinity], { label: "Constraint Value"}),
+  Inputs.select(constraints, { label: "Constraint Alert On", value: "p90 Latency (ms)"}),
+  Inputs.number([0, Infinity], { label: "Alert Value"}),
+
+  Inputs.button("Add tracking")
+]));
+return {apis,constraints};
+}});
+
+define({id: "72be6507", inputs: ["FileAttachment"], outputs: ["latency_0","latency_1","error_0"], body: (FileAttachment) => {
+const latency_0 = FileAttachment("./data/history-users-latency.csv").csv({typed: true});
+const latency_1 = FileAttachment("./data/history-stories-latency.csv").csv({typed: true});
+const error_0 = FileAttachment("./data/history-stories-error.csv").csv({typed: true});
+return {latency_0,latency_1,error_0};
+}});
+
+define({id: "c36e1322", inline: true, inputs: ["resize","latencyHistoryPlot","latency_0","display"], body: async (resize,latencyHistoryPlot,latency_0,display) => {
 display(await(
-resize((width) => latencyPlot(latency, {width}))
+resize((width) => latencyHistoryPlot(latency_0, {width, title: "POST /users/login at 1,000 TPS, p90 Latency", error: 350.}))
 ))
 }});
 
-define({id: "9834da55", inputs: ["FileAttachment","Plot","api_colors"], outputs: ["error","errorPlot"], body: (FileAttachment,Plot,api_colors) => {
-const error = FileAttachment("./data/error-history.csv").csv({typed: true});
-
-function errorPlot(data, {width} = {}) {
-  return Plot.plot({
-    title: "Error Rate Tracking",
-    width,
-    height: 300,
-    y: {grid: true, label: "Error Rate (Percentage)"},
-    x: {grid: true, label: "Date"},
-    color: {...api_colors, legend: true},
-    marks: [
-      Plot.line(data, {y: "error_rate", x: "date", marker:true, stroke: "api", tip:true}),
-    ]
-  });
-}
-return {error,errorPlot};
+define({id: "9ba962a4", inline: true, inputs: ["resize","latencyHistoryPlot","latency_1","display"], body: async (resize,latencyHistoryPlot,latency_1,display) => {
+display(await(
+resize((width) => latencyHistoryPlot(latency_1, {width, title: "GET /stories at 15,000 TPS, p90 Latency", error: 250.}))
+))
 }});
 
-define({id: "57b6dd4e", inline: true, inputs: ["resize","errorPlot","error","display"], body: async (resize,errorPlot,error,display) => {
+define({id: "c49e22e5", inline: true, inputs: ["resize","errorHistoryPlot","error_0","display"], body: async (resize,errorHistoryPlot,error_0,display) => {
 display(await(
-resize((width) => errorPlot(error, {width}))
+resize((width) => errorHistoryPlot(error_0, {width, title: "GET /stories at 200ms p90 Latency, Error Rate", error: 30.}))
 ))
 }});
 
@@ -133,18 +167,39 @@ resize((width) => errorPlot(error, {width}))
 <script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
+<div id="cell-974e2712" class="observablehq observablehq--block"></div>
 <h1 id="historical-trends" tabindex="-1"><a class="observablehq-header-anchor" href="#historical-trends">Historical Trends</a></h1>
-<p><em>AutoBalter can be configured to track custom, long-term statistics about your APIs. Get alerted when an API does not meet the requirements.</em></p>
-<div id="cell-a6ee6724" class="observablehq observablehq--block"></div>
+<div class="tip">
+<p>AutoBalter can be configured to track custom, long-term statistics about your APIs. Get alerted when an API does not meet the requirements.</p>
+</div>
 <div class="grid grid-cols-1">
   <div class="card">
-    <span id="cell-c59a4e61"><span class="observablehq-loading"></span></span>
+<div id="cell-6a8e4b37" class="observablehq observablehq--block"></div>
   </div>
 </div>
-<div id="cell-9834da55" class="observablehq observablehq--block"></div>
+<div id="cell-72be6507" class="observablehq observablehq--block"></div>
+<div class="tip">
+<p>AutoBalter allows you to easily identify trends in your performance before they become a problem for your users.</p>
+</div>
 <div class="grid grid-cols-1">
   <div class="card">
-    <span id="cell-57b6dd4e"><span class="observablehq-loading"></span></span>
+  <span id="cell-c36e1322"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div class="tip">
+<p>Alerts on performance metrics allow you to identify and fix issues before production.</p>
+</div>
+<div class="grid grid-cols-1">
+  <div class="card">
+  <span id="cell-9ba962a4"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+<div class="tip">
+<p>AutoBalter provides the ability to constrain your tracking to what matters for your service. Here, AutoBalter will find the max TPS with the given p90 Latency, and measures the error rate.</p>
+</div>
+<div class="grid grid-cols-1">
+  <div class="card">
+  <span id="cell-c49e22e5"><span class="observablehq-loading"></span></span>
   </div>
 </div>
 </main>
