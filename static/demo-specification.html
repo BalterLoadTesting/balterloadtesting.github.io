@@ -5,13 +5,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
 <link rel="modulepreload" href="./_observablehq/stdlib/dot.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
 <link rel="modulepreload" href="./_npm/@viz-js/viz@3.6.0/_esm.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
 <link rel="icon" href="./favicon.ico" type="image/png">
 <script type="module">
 
@@ -40,6 +45,10 @@ dot`digraph G {
     create_story -> create_comment
 }`
 ))
+}});
+
+define({id: "d292a525", inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.file());
 }});
 
 </script>
@@ -71,6 +80,7 @@ dot`digraph G {
 <div class="tip">
 <p>The Raw OpenAPI input can be synced with a Git repository or your CI/CD setup, or uploaded manually.</p>
 </div>
+<div id="cell-d292a525" class="observablehq observablehq--block"></div>
 <pre><code>{
     "openapi": "3.0.1",
     "info": {
