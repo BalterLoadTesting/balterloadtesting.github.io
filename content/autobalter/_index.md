@@ -5,79 +5,33 @@ template = "index.html"
 
 # AutoBalter
 
-From the team that developed [Balter-rs](www.balterloadtesting.com/balter) we provide a fully-automated load-testing solution. You provide an API specification, and then we handle everything else.
+From the team that developed [Balter-rs](www.balterloadtesting.com/balter) we provide a fully-automated load-testing, fuzzing and performance analysis solution. You provide an [OpenAPI specification](https://swagger.io/specification/), and then we handle everything else.
 
-- Max Transactions Per Second (TPS) for every API
-- Latency curves & Error rates
-- TPS/Latency/Error correlations between APIs
-- Automatic fuzzing & edge-case analysis
-- All data made available through Grafana and Prometheus
+- Max Transactions Per Second (TPS), latency curves & error rates for every API, and correlations between APIs.
+- Automatic fuzzing & edge-case analysis.
+- One-click regression testing.
+- Historical tracking and alarming.
+- An easy-to-use dashboard, as well as access to your data through Prometheus.
+- Weekly reports for business leaders.
+- Integrates with CI/CD solutions.
+
+# Demo
+
+The easiest way to learn about AutoBalter is to try the [demo](/demo-index.html).
 
 # How It Works
 
-## 1. Provide an OpenAPI specification
+AutoBalter takes an [OpenAPI specification](https://swagger.io/specification/) describing how your API works. AutoBalter will parse and interpret the specification, and use it as the starting point to learning your API.
 
-AutoBalter takes an [OpenAPI specification](https://swagger.io/specification/) describing how your API works. AutoBalter will parse and interpret the specification, and use it as the base point to learning your API. A snippet of an example of an OpenAPI specification is below:
+At the start, AutoBalter is "just" an automated load-test and fuzz-test generator. Using the OpenAPI specification, AutoBalter will target your APIs with simulated requests, providing data on TPS, latency and error curves and displaying these in an easy-to-use dashboard.
 
-```yaml
-paths:
-  /pet:
-    put:
-      summary: Update an existing pet
-      operationId: updatePet
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
-      responses:
-        400:
-          description: Invalid ID supplied
-          content: {}
-        404:
-          description: Pet not found
-          content: {}
-        405:
-          description: Validation exception
-          content: {}
-      security:
-      - petstore_auth:
-        - write:pets
-        - read:pets
-      x-codegen-request-body-name: body
-```
+Over time, with a mix of exhaustive tree-search and AI to generate the simulated requests, AutoBalter will learn about the design of your APIs and their constraints. This information will be leveraged to design requests which specifically target the edge-cases of your system. Any request can be added to a set of regression tests to automatically expand your integration test suite.
 
-## 2. Allow permissions for API access
-
-Adding permissions for AutoBalter to access your pre-prod stack will vary slightly between users. If you are using AWS, we will provide a CDK snippet like the following for you to enable access.
-
-```typescript
-const authorizer = new HttpIamAuthorizer();
-
-const httpApi = new apigwv2.HttpApi(this, 'HttpApi', {
-  defaultAuthorizer: authorizer,
-});
-
-const routes = httpApi.addRoutes({
-  integration: new HttpUrlIntegration('BooksIntegration', 'https://get-books-proxy.example.com'),
-  path: '/books/{book}',
-});
-
-routes[0].grantInvoke(principal);
-```
-
-## 3. Run!
-
-Once AutoBalter has your API specification and access to your pre-prod API setup, all you need to do is run it! AutoBalter will automatically run load test scenarios using your specification, as well as leveraging AI to find edge-cases.
-
+With just an OpenAPI specification, you get `{load, fuzz, integration, regression}`-testing.
 
 # Sign Up For Beta
 
-If you are interested in participating in AutoBalter beta, sign up below.
+If you are interested in participating in the AutoBalter beta, sign up below.
 
 
 <script async data-uid="509cbe35c2" src="https://balter-load-testing.ck.page/509cbe35c2/index.js"></script>
