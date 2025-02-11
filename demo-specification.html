@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Specification | AutoBalter Demo</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,near-midnight,alt,wide.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/dot.js">
+<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
+<link rel="modulepreload" href="./_npm/@viz-js/viz@3.6.0/_esm.js">
+<link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="icon" href="./favicon.ico" type="image/png">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+
+define({id: "cdc012da", inputs: ["dot","display"], body: async (dot,display) => {
+display(await(
+dot`digraph G {
+    rankdir = LR
+    login [label="POST /users/login"]
+    users [label="POST /users/new"]
+    list_stories [label="GET /stories"]
+    create_story [label="POST /stories"]
+    get_story [label="GET /stories/{story_id}"]
+    create_comment [label="POST /stories/{story_id}/comments"]
+
+    users -> login
+    login -> create_story
+    login -> create_comment
+
+    get_story -> create_comment
+    list_stories -> create_comment
+
+    list_stories -> get_story
+    create_story -> get_story
+    create_story -> create_comment
+}`
+))
+}});
+
+define({id: "d292a525", inputs: ["view","Inputs"], body: (view,Inputs) => {
+view(Inputs.file());
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./autobalter">AutoBalter Demo</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./demo-api-overview.html">API Overview</a></li>
+    <li class="observablehq-link"><a href="./demo-history.html">Historical Trends</a></li>
+    <li class="observablehq-link"><a href="./demo-report.html">Report</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./demo-specification.html">Specification</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="openapi-specification" tabindex="-1"><a class="observablehq-header-anchor" href="#openapi-specification">OpenAPI Specification</a></h1>
+<hr>
+<h2 id="relationship-graph" tabindex="-1"><a class="observablehq-header-anchor" href="#relationship-graph">Relationship Graph</a></h2>
+<div class="tip">
+<p>AutoBalter automatically parses the OpenAPI specification and determines relationships between APIs. This information is leveraged for all load-testing and fuzzing operations.</p>
+</div>
+<div id="cell-cdc012da" class="observablehq observablehq--block"><span class="observablehq-loading"></span></div>
+<h2 id="raw-input" tabindex="-1"><a class="observablehq-header-anchor" href="#raw-input">Raw Input</a></h2>
+<div class="tip">
+<p>The Raw OpenAPI input can be synced with a Git repository or your CI/CD setup, or uploaded manually.</p>
+</div>
+<div id="cell-d292a525" class="observablehq observablehq--block"></div>
+<pre><code>{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Demo Forum",
+        "description": "An API demo for a basic forum.",
+        "version": "1.0.0",
+        "termsOfService": "Coming soon",
+        "license": {
+            "name": "GNU GPLv3 ",
+            "url": "https://spdx.org/licenses/GPL-3.0-or-later.html"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://beta.example.com/v1/api",
+            "description": "The API beta server"
+        }
+    ],
+    "paths": {
+        "/users/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Login as a given user. Use either the `username` or `user_id`. Returns the API token for using authenticated APIs (such as creating a story or comment).",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLogin"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/new": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Create a new user with the given `username` and `password`. Remember your credentials, as you will need them to login!",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "user_id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stories": {
+            "get": {
+                "tags": [
+                    "Stories"
+                ],
+                "description": "List stories. Note: Currently only supports listing by newest.",
+                "parameters": [
+                    {
+                        "name": "next_token",
+                        "in": "path",
+                        "description": "Optional next_token for fetching the next page of comments",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "stories": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Story"
+                                            }
+                                        },
+                                        "next_token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Stories"
+                ],
+                "description": "Submit a new story to be viewed by others.",
+                "security": [
+                    { "BearerAuth": [] }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewStory"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "story_id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stories/{story_id}": {
+            "get": {
+                "tags": [
+                    "Stories"
+                ],
+                "description": "Get a specific story by story_id.",
+                "parameters": [
+                    {
+                        "name": "story_id",
+                        "in": "path",
+                        "description": "ID of the story to get",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Story"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stories/{story_id}/comments": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "description": "Submit a comment to the story. This can either be a new top-level comment, or a response to another comment (set the parent_id in that case)",
+                "security": [
+                    { "BearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "name": "story_id",
+                        "in": "path",
+                        "description": "ID of the story to get",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewComment"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "comment_id": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+    },
+    "components": {
+        "schemas": {
+            "Story": {
+                "required": [
+                    "id", "author_id", "created_at", "title"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "author_id": {
+                        "type": "number"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "text": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
+            "Comment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "author_id": {
+                        "type": "number"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "parent_id": {
+                        "type": "number",
+                        "nullable": true
+                    }
+                }
+            },
+            "NewStory": {
+                "type": "object",
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Some Title"
+                    },
+                    "url": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "http://example.com"
+                    },
+                    "text": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "Some body of text"
+                    }
+                }
+            },
+            "NewComment": {
+                "type": "object",
+                "required": [
+                    "text"
+                ],
+                "properties": {
+                    "text": {
+                        "type": "string",
+                        "example": "Here is an example comment!"
+                    },
+                    "parent_id": {
+                        "type": "number",
+                        "example": 23,
+                        "nullable": true
+                    }
+                }
+            },
+            "NewUser": {
+                "type": "object",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "UserLogin": {
+                "type": "object",
+                "required": [
+                    "password",
+                ],
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "nullable": true,
+                        "example": "TestUser"
+                    },
+                    "user_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "example": null
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "im-a-password"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "description": "JWT Authorizations header using Bearer scheme.",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
+</code></pre>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./demo-report.html"><span>Report</span></a></nav>
+<div>BalterLoadTesting.com</div>
+</footer>
+</div>

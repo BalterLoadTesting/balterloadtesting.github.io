@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Report | AutoBalter Demo</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-near-midnight.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-near-midnight.css">
+<link rel="modulepreload" href="./_observablehq/client.js">
+<link rel="modulepreload" href="./_observablehq/runtime.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.js">
+<link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.14/_esm.js">
+<link rel="modulepreload" href="./_npm/d3@7.9.0/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-array@3.2.4/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-axis@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-brush@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-chord@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-color@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-contour@4.0.2/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-delaunay@6.0.4/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-dispatch@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-drag@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-ease@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-fetch@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-force@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-format@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-geo@3.1.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-hierarchy@3.1.2/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-interpolate@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-path@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-polygon@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-quadtree@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-random@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-scale@4.0.2/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-scale-chromatic@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-selection@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-shape@3.2.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-time@3.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-time-format@4.1.0/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-timer@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-transition@3.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/d3-zoom@3.0.0/_esm.js">
+<link rel="modulepreload" href="./_npm/binary-search-bounds@2.0.5/_esm.js">
+<link rel="modulepreload" href="./_npm/internmap@2.0.3/_esm.js">
+<link rel="modulepreload" href="./_npm/delaunator@5.0.1/_esm.js">
+<link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/_esm.js">
+<link rel="icon" href="./favicon.ico" type="image/png">
+<script type="module">
+
+import {define} from "./_observablehq/client.js";
+import {registerFile} from "./_observablehq/stdlib.js";
+
+registerFile("./data/history-stories-latency.csv", {"name":"./data/history-stories-latency.csv","mimeType":"text/csv","path":"./_file/data/history-stories-latency.45370c14.csv","lastModified":1718056370461});
+
+define({id: "3d4a8313", inputs: ["Plot","FileAttachment"], outputs: ["latencyHistoryPlot","latency_1"], body: (Plot,FileAttachment) => {
+function latencyHistoryPlot(data, {width, title, error} = {}) {
+  return Plot.plot({
+    title,
+    width,
+    height: 300,
+    y: {grid: true, label: "Latency (ms)"},
+    x: {grid: true, label: "Date"},
+    marks: [
+      Plot.line(data, {y: "latency", x: "date", marker:true, tip:true, stroke: "#4269d0"}),
+      Plot.ruleY([error], {stroke: "red", marker: true, tip: true})
+    ]
+  });
+}
+
+const latency_1 = FileAttachment("./data/history-stories-latency.csv").csv({typed: true});
+return {latencyHistoryPlot,latency_1};
+}});
+
+define({id: "9ba962a4", inline: true, inputs: ["resize","latencyHistoryPlot","latency_1","display"], body: async (resize,latencyHistoryPlot,latency_1,display) => {
+display(await(
+resize((width) => latencyHistoryPlot(latency_1, {width, title: "GET /stories at 15,000 TPS, p90 Latency", error: 250.}))
+))
+}});
+
+</script>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./autobalter">AutoBalter Demo</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./demo-api-overview.html">API Overview</a></li>
+    <li class="observablehq-link"><a href="./demo-history.html">Historical Trends</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./demo-report.html">Report</a></li>
+    <li class="observablehq-link"><a href="./demo-specification.html">Specification</a></li>
+  </ol>
+</nav>
+<script>{Object.assign(document.createElement("a"),{href:""}).password&&location.replace(location.href);const e=document.querySelector("#observablehq-sidebar"),t=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?t.checked=r==="true":t.indeterminate=!0;for(const o of document.querySelectorAll("#observablehq-sidebar summary")){const s=o.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${o.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<aside id="observablehq-toc" data-selector="h1:not(:first-of-type)[id], h2:first-child[id], :not(h1) + h2[id]">
+<nav>
+<div>Contents</div>
+<ol>
+<li class="observablehq-secondary-link"><a href="#api-snapshot">API Snapshot</a></li>
+<li class="observablehq-secondary-link"><a href="#alarm-events">Alarm Events</a></li>
+</ol>
+</nav>
+</aside>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<h1 id="weekly-report" tabindex="-1"><a class="observablehq-header-anchor" href="#weekly-report">Weekly Report</a></h1>
+<div class="tip">
+<p>For business leaders, having quick access to high-level details is critical for keeping an eye on business metrics without being bogged down in details.</p>
+<p>AutoBalter can be configured to provide weekly reports which contain important tracking metrics and highlights anomalous behavior. These can be surfaced in the Dashboard or sent via weekly Email updates.</p>
+</div>
+<h2 id="api-snapshot" tabindex="-1"><a class="observablehq-header-anchor" href="#api-snapshot">API Snapshot</a></h2>
+<div class="tip">
+<p>Customizable grid of API data with marked Week-over-Week trends.</p>
+</div>
+<div class="card">
+<div class="grid grid-cols-4">
+  <div>
+<h2>
+<p><strong><code>POST /user/new</code></strong></p>
+</h2>
+  </div>
+  <div>
+    <h2>Max TPS</h2>
+    <span class="big">2,379</span>
+  </div>
+  <div>
+    <h2>Max Latency (p90)</h2>
+    <span class="big">2.47s</span>
+  </div>
+  <div>
+    <h2>Max Error Rate</h2>
+    <span class="big">32.3%</span>
+  </div>
+  <div>
+<h2>
+<p><strong><code>GET /stories</code></strong></p>
+</h2>
+  </div>
+  <div>
+    <h2>Max TPS</h2>
+    <span class="big">23,003</span>
+  </div>
+  <div>
+    <h2>Max Latency (p90)</h2>
+    <span class="big">1.01s</span>
+  </div>
+  <div>
+    <h2>Max Error Rate</h2>
+    <span class="big">7.3%</span>
+  </div>
+  <div>
+<h2>
+<p><strong><code>GET /stories/{story_id}</code></strong></p>
+</h2>
+  </div>
+  <div>
+    <h2>Max TPS</h2>
+    <span><span class="big">50,205</span> <span style="color:#3ca951;">+12%</span></span>
+  </div>
+  <div>
+    <h2>Max Latency (p90)</h2>
+    <span class="big">2.70s</span>
+  </div>
+  <div>
+    <h2>Max Error Rate</h2>
+    <span class="big">6.82%</span>
+  </div>
+  <div>
+<h2>
+<p><strong><code>POST /users/login</code></strong></p>
+</h2>
+  </div>
+  <div>
+    <h2>Max TPS</h2>
+    <span class="big">1,498</span>
+  </div>
+  <div>
+    <h2>Max Latency (p90)</h2>
+    <span><span class="big">1.05s</span> <span style="color:#ff725c;">+52%</span>  </span>
+  </div>
+  <div>
+    <h2>Max Error Rate</h2>
+    <span class="big">34.0%</span>
+  </div>
+  <div>
+<h2>
+<p><strong><code>POST /stories</code></strong></p>
+</h2>
+  </div>
+  <div>
+    <h2>Max TPS</h2>
+    <span class="big">5,001</span>
+  </div>
+  <div>
+    <h2>Max Latency (p90)</h2>
+    <span><span class="big">531ms</span> <span style="color:#ff725c;">+32%</span>  </span>
+  </div>
+  <div>
+    <h2>Max Error Rate</h2>
+    <span class="big">1.5%</span>
+  </div>
+  <div>
+<h2>
+<p><strong><code>POST /stories/{story_id}/comments</code></strong></p>
+</h2>
+  </div>
+  <div>
+    <h2>Max TPS</h2>
+    <span class="big">5,003</span>
+  </div>
+  <div>
+    <h2>Max Latency (p90)</h2>
+    <span class="big">571ms</span>
+  </div>
+  <div>
+    <h2>Max Error Rate</h2>
+    <span class="big">1.1%</span>
+  </div>
+</div>
+</div>
+<h2 id="alarm-events" tabindex="-1"><a class="observablehq-header-anchor" href="#alarm-events">Alarm Events</a></h2>
+<h3 id="6%2F07%2F2024-get-%2Fstories" tabindex="-1"><a class="observablehq-header-anchor" href="#6%2F07%2F2024-get-%2Fstories">6/07/2024 <code>GET /stories</code></a></h3>
+<ul>
+<li>6/07/2024 p90 Latency exceeded limits</li>
+<li>6/08/2024 Recovered</li>
+</ul>
+<div id="cell-3d4a8313" class="observablehq observablehq--block"></div>
+<div class="grid grid-cols-1">
+  <div class="card">
+  <span id="cell-9ba962a4"><span class="observablehq-loading"></span></span>
+  </div>
+</div>
+</main>
+<footer id="observablehq-footer">
+<nav><a rel="prev" href="./demo-history.html"><span>Historical Trends</span></a><a rel="next" href="./demo-specification.html"><span>Specification</span></a></nav>
+<div>BalterLoadTesting.com</div>
+</footer>
+</div>

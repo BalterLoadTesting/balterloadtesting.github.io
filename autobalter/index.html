@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Balter Load Testing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+        --primary-color: #382929;
+        --primary-text-color: #d7d7d7;
+        --primary-text-color-over: #FFF;
+        --primary-link-color: #9b9b9b;
+        --secondary-color: #282828;
+        --secondary-text-color: #f2f2f2;
+        --toc-highlight-text-color: #f2f2f2;
+        --toc-background-color: #3a3a3a;
+        --code-color: white;
+        --code-background-color: none;
+
+        --shadow-color: #202020;
+        --header-font-family: "Fira Sans", sans-serif;
+        --text-font-family: "Fira Sans", sans-serif;
+    }
+</style>
+
+    
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://www.balterloadtesting.com/juice.css">
+    
+    
+</head>
+
+<body>
+    
+
+    <header class="pos-absolute" style="background-color: transparent">
+        
+
+<a href="https://www.balterloadtesting.com/">
+    <div class="logo">
+        Balter Load Testing
+    </div>
+</a>
+
+<nav>
+    
+    
+        
+        <a class="nav-item subtitle-text" href="/balter">Balter-rs</a>
+        
+    
+</nav>
+
+    </header>
+
+    <div class="hero">
+        
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script async defer src="https://scripts.withcabin.com/hello.js"></script>
+
+<div class="hero-wrapper">
+  <section class="text-center">
+      <h1 class="heading-text" style="font-size: 50px">
+          AutoBalter
+          <!--<img src="https://www.balterloadtesting.com/balter-v4.svg" style="height:2em">-->
+      </h1>
+      <h3 class="title-text">
+        Automatic load testing, fuzzing and performance analysis.
+      </h3>
+      <h3 class="title-text">
+        Full confidence in your system with just an API spec. 
+      </h3>
+      <div>
+          <a class="text" href="/demo-index.html" data-size="large" data-show-count="true">Try the demo!</a>
+      </div>
+  </section>
+  <img class="hero-image" style="width: 50%" src="https://www.balterloadtesting.com/autobalter-mockup.png">
+</div>
+<div class="explore-more text"
+    onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+    Explore More ⇩
+</div>
+<style>
+    .hero section {
+        padding: 0 5rem;
+    }
+
+    #sponsor-small {
+      display: none
+    }
+
+    @media screen and (max-width: 768px) {
+        .hero section {
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            display: none
+        }
+
+        .demo-code {
+            display: none
+        }
+
+        #sponsor-big {
+          display: none
+        }
+
+        #sponsor-small {
+          display: block
+        }
+    }
+
+    .hero-wrapper {
+      display: flex;
+      flex-wrap: no-wrap;
+    }
+</style>
+
+    </div>
+
+    
+
+    <main>
+        
+        
+        
+        
+        
+        <div class="toc">
+            <div class="toc-sticky">
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://www.balterloadtesting.com/autobalter/#autobalter">AutoBalter</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://www.balterloadtesting.com/autobalter/#demo">Demo</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://www.balterloadtesting.com/autobalter/#how-it-works">How It Works</a>
+                </div>
+                
+                
+                <div class="toc-item">
+                    <a class="subtext" href="https://www.balterloadtesting.com/autobalter/#sign-up-for-beta">Sign Up For Beta</a>
+                </div>
+                
+                
+            </div>
+        </div>
+        
+        
+
+        <div class="content text">
+            
+<h1 id="autobalter">AutoBalter</h1>
+<p>From the team that developed <a href="https://www.balterloadtesting.com/autobalter/www.balterloadtesting.com/balter">Balter-rs</a> we provide a fully-automated load-testing, fuzzing and performance analysis solution. You provide an <a href="https://swagger.io/specification/">OpenAPI specification</a>, and then we handle everything else.</p>
+<ul>
+<li>Max Transactions Per Second (TPS), latency curves &amp; error rates for every API, and correlations between APIs.</li>
+<li>Automatic fuzzing &amp; edge-case analysis.</li>
+<li>One-click regression testing.</li>
+<li>Historical tracking and alarming.</li>
+<li>An easy-to-use dashboard, as well as access to your data through Prometheus.</li>
+<li>Weekly reports for business leaders.</li>
+<li>Integrates with CI/CD solutions.</li>
+</ul>
+<h1 id="demo">Demo</h1>
+<p>The easiest way to learn about AutoBalter is to try the <a href="/demo-index.html">demo</a>.</p>
+<h1 id="how-it-works">How It Works</h1>
+<p>AutoBalter takes an <a href="https://swagger.io/specification/">OpenAPI specification</a> describing how your API works. AutoBalter will parse and interpret the specification, and use it as the starting point to learning your API.</p>
+<p>At the start, AutoBalter is &quot;just&quot; an automated load-test and fuzz-test generator. Using the OpenAPI specification, AutoBalter will target your APIs with simulated requests, providing data on TPS, latency and error curves and displaying these in an easy-to-use dashboard.</p>
+<p>Over time, with a mix of exhaustive tree-search and AI to generate the simulated requests, AutoBalter will learn about the design of your APIs and their constraints. This information will be leveraged to design requests which specifically target the edge-cases of your system. Any request can be added to a set of regression tests to automatically expand your integration test suite.</p>
+<p>With just an OpenAPI specification, you get <code>{load, fuzz, integration, regression}</code>-testing.</p>
+<h1 id="sign-up-for-beta">Sign Up For Beta</h1>
+<p>If you are interested in participating in the AutoBalter beta, sign up below.</p>
+<script async data-uid="509cbe35c2" src="https://balter-load-testing.ck.page/509cbe35c2/index.js"></script>
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+<footer>
+    <small class="subtext">
+        <a href="mailto:contact@balterloadtesting.com">contact@balterloadtesting.com</a>
+    </small>
+    <small class="subtext">
+        <a href="https://balterloadtesting.com">BalterLoadTesting.com</a> © 2024
+    </small>
+</footer>
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>

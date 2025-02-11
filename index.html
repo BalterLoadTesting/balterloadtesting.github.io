@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Balter Load Testing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    
+    <style>
+    :root {
+        --primary-color: #382929;
+        --primary-text-color: #d7d7d7;
+        --primary-text-color-over: #FFF;
+        --primary-link-color: #9b9b9b;
+        --secondary-color: #282828;
+        --secondary-text-color: #f2f2f2;
+        --toc-highlight-text-color: #f2f2f2;
+        --toc-background-color: #3a3a3a;
+        --code-color: white;
+        --code-background-color: none;
+
+        --shadow-color: #202020;
+        --header-font-family: "Fira Sans", sans-serif;
+        --text-font-family: "Fira Sans", sans-serif;
+    }
+</style>
+
+    
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/normalize.css">
+    <link rel="stylesheet" href="https://www.balterloadtesting.com/juice.css">
+    
+    
+</head>
+
+<body>
+    
+<header class="pos-absolute" style="background-color: transparent">
+    
+
+<a href="https://www.balterloadtesting.com/">
+    <div class="logo">
+        Balter Load Testing
+    </div>
+</a>
+
+<nav>
+    
+    
+        
+        <a class="nav-item subtitle-text" href="/balter">Balter-rs</a>
+        
+    
+</nav>
+
+</header>
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script async defer src="https://scripts.withcabin.com/hello.js"></script>
+
+<div class="hero-stack">
+
+  <!--
+  <div class="hero">
+    <div class="hero-wrapper">
+    <section class="text-center">
+        <h1 class="heading-text" style="font-size: 50px">
+            AutoBalter
+            < !--<img src="https://www.balterloadtesting.com/logo.svg" style="width:5em">-- >
+        </h1>
+        <h3 class="title-text">
+          Automatic load testing, fuzzing and performance analysis.
+        </h3>
+        <h3 class="title-text">
+          Full confidence in your system with just an API spec. 
+        </h3>
+        <div>
+            <a class="text" href="/autobalter" data-size="large" data-show-count="true">Learn more!</a>
+        </div>
+    </section>
+    <img class="hero-image" style="width: 50%" src="https://www.balterloadtesting.com/autobalter-mockup.png">
+    </div>
+  </div>
+  -->
+
+  <!--div class="hero" style="background-color: var(--secondary-color)"-->
+  <div class="hero">
+<div class="hero-wrapper">
+<section class="text-center">
+    <h1 class="heading-text" style="font-size: 50px; border: none">
+      Balter-rs
+        <!--<img src="https://www.balterloadtesting.com/logo.svg" style="width:5em">-->
+    </h1>
+    <h3 class="title-text" style="border:none">
+      The composable distributed load testing framework.
+    </h3>
+    <h3 class="title-text" style="border:none">
+      Open Source under the MIT License.  
+    </h3>
+    <div style="padding-bottom: 1em">
+    <a class="github-button" href="https://github.com/balterloadtesting/balter" data-size="large" data-show-count="true"
+                                                                                                  aria-label="Star balterloadtesting/balter on GitHub">Star</a>
+    <a class="github-button" href="https://github.com/balterloadtesting/balter/fork" data-size="large"
+                                                                                     data-show-count="true" aria-label="Fork balterloadtesting/balter on GitHub">Fork</a>
+    </div>
+
+    <a class="text" href="https://balterloadtesting.com/balter" data-size="large" data-show-count="true">Learn more!</a>
+    </div>
+</section>
+<div class="content demo-code">
+  <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>balter::prelude::*;
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">tokio</span><span>::</span><span style="color:#bf616a;">main</span><span>]
+</span><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">main</span><span>() {
+</span><span>    tokio::join! {
+</span><span>        async {
+</span><span>            </span><span style="color:#65737e;">// First, set up a background load which either hits
+</span><span>            </span><span style="color:#65737e;">// 10K TPS, has a p95 latency of 200ms or has an
+</span><span>            </span><span style="color:#65737e;">// error rate of 5%
+</span><span>            </span><span style="color:#96b5b4;">set_background_load</span><span>()
+</span><span>                .</span><span style="color:#96b5b4;">tps</span><span>(</span><span style="color:#d08770;">10_000</span><span>)
+</span><span>                .</span><span style="color:#96b5b4;">latency</span><span>(Duration::from_millis(</span><span style="color:#d08770;">200</span><span>), </span><span style="color:#d08770;">0.95</span><span>)
+</span><span>                .</span><span style="color:#96b5b4;">error_rate</span><span>(</span><span style="color:#d08770;">0.05</span><span>)
+</span><span>                .await;
+</span><span>        },
+</span><span>        async {
+</span><span>            </span><span style="color:#65737e;">// After 300s of waiting, test our scaling ability
+</span><span>            </span><span style="color:#65737e;">// by running a scenario which achieves either
+</span><span>            </span><span style="color:#65737e;">// 100K TPS or a p90 latency of 1,000ms
+</span><span>            </span><span style="color:#96b5b4;">sleep</span><span>(Duration::from_secs(</span><span style="color:#d08770;">300</span><span>)).await;
+</span><span>
+</span><span>            </span><span style="color:#96b5b4;">test_scaling_functionality</span><span>()
+</span><span>                .</span><span style="color:#96b5b4;">tps</span><span>(</span><span style="color:#d08770;">100_000</span><span>)
+</span><span>                .</span><span style="color:#96b5b4;">latency</span><span>(Duration::from_millis(</span><span style="color:#d08770;">1_000</span><span>), </span><span style="color:#d08770;">0.90</span><span>)
+</span><span>                .</span><span style="color:#96b5b4;">duration</span><span>(Duration::from_secs(</span><span style="color:#d08770;">3600</span><span>))
+</span><span>                .await;
+</span><span>        },
+</span><span>    }
+</span><span>}
+</span></code></pre>
+
+</div>
+</div>
+    </div>
+
+</div>
+
+<style>
+    .hero {
+      height: 90vh;
+    }
+
+    .hero section {
+        padding: 0 5rem;
+    }
+
+    #sponsor-small {
+      display: none
+    }
+
+    @media screen and (max-width: 768px) {
+        .hero section {
+            padding: 0 2rem;
+        }
+
+        .hero-image {
+            display: none
+        }
+
+        .demo-code {
+            display: none
+        }
+
+        #sponsor-big {
+          display: none
+        }
+
+        #sponsor-small {
+          display: block
+        }
+    }
+
+    .hero-wrapper {
+      display: flex;
+      flex-wrap: no-wrap;
+    }
+
+    .hero-stack {
+      display: flex;
+      flex-direction: column;
+    }
+</style>
+
+
+    <main>
+        
+        
+        
+        
+
+        <div class="content text">
+            
+
+
+        </div>
+
+        
+        
+    </main>
+
+    
+<footer>
+    <small class="subtext">
+        <a href="mailto:contact@balterloadtesting.com">contact@balterloadtesting.com</a>
+    </small>
+    <small class="subtext">
+        <a href="https://balterloadtesting.com">BalterLoadTesting.com</a> © 2024
+    </small>
+</footer>
+
+</body>
+<script>
+    const scrollHandler = entries => {
+        // Find the first entry which intersecting and ratio > 0.9 to highlight.
+        let entry = entries.find(entry => {
+            return entry.isIntersecting && entry.intersectionRatio > 0.9;
+        });
+        if (!entry) return;
+
+        document.querySelectorAll(".toc a").forEach((item) => {
+            item.classList.remove("active");
+        });
+
+        // let url = new URL(`#${entry.target.id}`);
+        let link = document.querySelector(`.toc a[href$="${decodeURIComponent(`#${entry.target.id}`)}"]`)
+        if (link) {
+            link.classList.add("active");
+            link.scrollIntoView({ behavior: "auto", block: "nearest" });
+        }
+    };
+    // Set -100px root margin to improve highlight experience.
+    const observer = new IntersectionObserver(scrollHandler, { threshold: 1 });
+    let items = document.querySelectorAll('h1,h2,h3,h4,h5,h6');
+    items.forEach(item => observer.observe(item));
+</script>
+
+</html>
